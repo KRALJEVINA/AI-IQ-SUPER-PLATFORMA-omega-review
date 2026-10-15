@@ -1,5 +1,6 @@
 import type { NextConfig } from 'next';
 import { withBotId } from 'botid/next/config';
+import { applyOmegaStudioMediaPolicy, OMEGA_STUDIO_PATH } from './src/lib/omegatrojektorijum/media-policy';
 
 const nextConfig: NextConfig = {
   // Reduce serverless bundle size — exclude heavy node_modules from tracing
@@ -11,7 +12,8 @@ const nextConfig: NextConfig = {
       './node_modules/@typescript-eslint/**',
     ],
   },
-  headers: async () => [
+  headers: async () => {
+    const rules = [
     {
       source: '/(.*)',
       headers: [
@@ -32,7 +34,14 @@ const nextConfig: NextConfig = {
         { key: 'Cache-Control', value: 'no-store, max-age=0' },
       ],
     },
-  ],
+    ];
+    const studioHeaders = new Headers(rules[0].headers.map(({ key, value }): [string, string] => [key, value]));
+    applyOmegaStudioMediaPolicy(studioHeaders, OMEGA_STUDIO_PATH);
+    return [...rules, {
+      source: OMEGA_STUDIO_PATH,
+      headers: ['Permissions-Policy', 'Content-Security-Policy'].map(key => ({ key, value: studioHeaders.get(key)! })),
+    }];
+  },
 };
 
 export default withBotId(nextConfig);
