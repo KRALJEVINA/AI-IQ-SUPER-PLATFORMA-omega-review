@@ -25,12 +25,9 @@ async function proposeSync({ github, context, core, direction }) {
       });
       pr = result.data;
     }
-    core.summary.addRaw(`
-- Review: ${pr.html_url}
-`);
+    core.summary.addRaw(`\n- Review: ${pr.html_url}\n`);
   }
   core.summary.addRaw('\nNo branches were modified. Human review and successful required checks are prerequisites for manual merge.\n');
   await core.summary.write();
 }
 module.exports = { proposeSync };
-
