@@ -1,298 +1,37 @@
-# ═══════════════════════════════════════════════════════════
-# 🔀 OMEGA Mega Merge — Automatski merge SVIH grana u main
-# ═══════════════════════════════════════════════════════════
-#
-# Ovaj workflow:
-# 1. Pronalazi SVE grane koje imaju promene koje nisu u main
-# 2. Merge-uje ih direktno u main (bez kreiranja PR-a)
-# 3. Push-uje main na GitHub
-# 4. Briše grane koje su već merged
-#
-# Pokreće se:
-# - Svakih 6 sati automatski
-# - Na svaki push na copilot/* grane
-# - Ručno putem workflow_dispatch
-#
-
+# Synchronization proposals only; merging requires human review and required CI.
 name: 🔀 Omega Mega Merge
 
 on:
   schedule:
-    # Svakih 6 sati: 01:00, 07:00, 13:00, 19:00 UTC
     - cron: '0 1,7,13,19 * * *'
-
-  push:
-    branches:
-      - 'copilot/**'
-      - '!copilot/automate-merge-branches'
-
   workflow_dispatch:
-    inputs:
-      delete_merged:
-        description: 'Obriši grane koje su već merged u main'
-        required: false
-        default: 'true'
-        type: choice
-        options:
-          - 'true'
-          - 'false'
 
 permissions:
-  contents: write
+  contents: read
+
+# Serialize both proposal workflows to avoid duplicate PR creation.
+concurrency:
+  group: omega-sync-proposals
+  cancel-in-progress: false
 
 jobs:
-  mega-merge:
-    name: 🔀 Mega Merge svih grana u main
+  propose-sync:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
-      - name: ⬇️ Checkout sa punom istorijom
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
           ref: main
-
-      - name: 🔧 Konfiguracija Git-a
-        run: |
-          git config user.name "Omega Mega Merge Bot"
-          git config user.email "omega-mega-merge@spaja.rs"
-
-      - name: 🔍 Pronađi grane za merge
-        id: find-branches
+          persist-credentials: false
+      - name: Test sync safety
+        run: node --test scripts/tests/omega-sync.test.cjs
+      - name: Propose into-main
         uses: actions/github-script@v7
         with:
           script: |
-            const owner = context.repo.owner;
-            const repo = context.repo.repo;
-
-            // Dohvati main SHA
-            const mainRef = await github.rest.git.getRef({
-              owner, repo,
-              ref: 'heads/main',
-            });
-            const mainSha = mainRef.data.object.sha;
-            console.log(`📌 Main SHA: ${mainSha}`);
-
-            // Dohvati sve grane (paginirano)
-            let allBranches = [];
-            let page = 1;
-            while (true) {
-              const resp = await github.rest.repos.listBranches({
-                owner, repo,
-                per_page: 100,
-                page,
-              });
-              allBranches = allBranches.concat(resp.data);
-              if (resp.data.length < 100) break;
-              page++;
-            }
-
-            console.log(`📊 Ukupno grana: ${allBranches.length}`);
-
-            // Zaštićene grane — ne merge-ujemo
-            const skip = new Set(['main', 'master', 'develop', 'staging', 'production']);
-
-            const branchesToMerge = [];
-            const branchesAlreadyMerged = [];
-
-            for (const branch of allBranches) {
-              if (skip.has(branch.name)) continue;
-
-              try {
-                const comparison = await github.rest.repos.compareCommits({
-                  owner, repo,
-                  base: mainSha,
-                  head: branch.commit.sha,
-                });
-
-                if (comparison.data.ahead_by > 0) {
-                  branchesToMerge.push({
-                    name: branch.name,
-                    sha: branch.commit.sha,
-                    ahead: comparison.data.ahead_by,
-                    behind: comparison.data.behind_by,
-                  });
-                  console.log(`✅ Za merge: ${branch.name} (ahead: ${comparison.data.ahead_by}, behind: ${comparison.data.behind_by})`);
-                } else {
-                  branchesAlreadyMerged.push(branch.name);
-                }
-              } catch (e) {
-                console.log(`⚠️ Greška pri proveri ${branch.name}: ${e.message}`);
-              }
-            }
-
-            console.log('');
-            console.log(`📊 Za merge: ${branchesToMerge.length}`);
-            console.log(`📊 Već merged: ${branchesAlreadyMerged.length}`);
-
-            // Sortiraj po broju commit-ova ispred (manje ispred = lakši merge)
-            branchesToMerge.sort((a, b) => a.ahead - b.ahead);
-
-            const branchNames = branchesToMerge.map(b => b.name);
-            core.setOutput('branches', JSON.stringify(branchNames));
-            core.setOutput('count', branchesToMerge.length.toString());
-            core.setOutput('already_merged', branchesAlreadyMerged.length.toString());
-            core.setOutput('already_merged_branches', JSON.stringify(branchesAlreadyMerged));
-
-            return branchNames;
-
-      - name: 🔀 Merge svih grana direktno u main
-        id: merge
-        if: steps.find-branches.outputs.count != '0'
-        run: |
-          BRANCHES='${{ steps.find-branches.outputs.branches }}'
-          BRANCH_COUNT=${{ steps.find-branches.outputs.count }}
-
-          echo "## 🔀 Omega Mega Merge" >> "$GITHUB_STEP_SUMMARY"
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "**Grane za merge:** $BRANCH_COUNT" >> "$GITHUB_STEP_SUMMARY"
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-
-          # Inicijalizuj temp fajlove
-          > /tmp/merged_branches.txt
-          > /tmp/merged_list.txt
-          > /tmp/failed_branches.txt
-          > /tmp/failed_list.txt
-
-          # Merge svake grane direktno u main (bez kreiranja PR-a)
-          while IFS= read -r BRANCH; do
-            echo "::group::Merge: $BRANCH"
-
-            # Fetch branch
-            git fetch origin "$BRANCH" 2>/dev/null || {
-              echo "⚠️ Fetch neuspešan za: $BRANCH"
-              echo "::endgroup::"
-              continue
-            }
-
-            # Pokušaj merge u main
-            if git merge "origin/$BRANCH" --no-edit -m "🔀 Mega merge: $BRANCH → main"; then
-              echo "✅ Uspešno: $BRANCH"
-              echo "- ✅ \`$BRANCH\`" >> /tmp/merged_list.txt
-              echo "$BRANCH" >> /tmp/merged_branches.txt
-            else
-              echo "❌ Konflikt: $BRANCH"
-              git merge --abort 2>/dev/null || true
-              echo "- ❌ \`$BRANCH\` — konflikti" >> /tmp/failed_list.txt
-              echo "$BRANCH" >> /tmp/failed_branches.txt
-            fi
-
-            echo "::endgroup::"
-          done < <(echo "$BRANCHES" | jq -r '.[]')
-
-          # Prebroj rezultate
-          MERGED=$(wc -l < /tmp/merged_branches.txt)
-          FAILED=$(wc -l < /tmp/failed_branches.txt)
-
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "### ✅ Uspešno merge-ovane ($MERGED):" >> "$GITHUB_STEP_SUMMARY"
-          if [ "$MERGED" -gt 0 ]; then
-            cat /tmp/merged_list.txt >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo "- Nema" >> "$GITHUB_STEP_SUMMARY"
-          fi
-
-          if [ "$FAILED" -gt 0 ]; then
-            echo "" >> "$GITHUB_STEP_SUMMARY"
-            echo "### ❌ Konflikti ($FAILED):" >> "$GITHUB_STEP_SUMMARY"
-            cat /tmp/failed_list.txt >> "$GITHUB_STEP_SUMMARY"
-          fi
-
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "**Ukupno:** $MERGED uspešno, $FAILED konflikata" >> "$GITHUB_STEP_SUMMARY"
-
-          # Push direktno u main ako ima promena
-          if [ "$MERGED" -gt 0 ]; then
-            git push origin main
-            echo "merged_count=$MERGED" >> "$GITHUB_OUTPUT"
-            echo "has_merges=true" >> "$GITHUB_OUTPUT"
-            echo "" >> "$GITHUB_STEP_SUMMARY"
-            echo "✅ Main ažuriran sa $MERGED grana!" >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo "has_merges=false" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: 🧹 Obriši već merged grane
-        if: >-
-          steps.find-branches.outputs.already_merged != '0' &&
-          (github.event.inputs.delete_merged == 'true' || github.event_name == 'schedule' || github.event_name == 'push')
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const owner = context.repo.owner;
-            const repo = context.repo.repo;
-            const alreadyMerged = JSON.parse('${{ steps.find-branches.outputs.already_merged_branches }}' || '[]');
-
-            const skip = new Set(['main', 'master', 'develop', 'staging', 'production']);
-            let deleted = 0;
-
-            for (const branch of alreadyMerged) {
-              if (skip.has(branch)) continue;
-
-              try {
-                await github.rest.git.deleteRef({
-                  owner, repo,
-                  ref: `heads/${branch}`,
-                });
-                console.log(`🗑️ Obrisana: ${branch}`);
-                deleted++;
-              } catch (e) {
-                console.log(`⚠️ Nije moguće obrisati ${branch}: ${e.message}`);
-              }
-            }
-
-            console.log(`\n📊 Obrisano ${deleted} od ${alreadyMerged.length} merged grana.`);
-
-      - name: ✅ Nema grana za merge
-        if: steps.find-branches.outputs.count == '0'
-        run: |
-          echo "## ✅ Sve grane su već merge-ovane u main!" >> "$GITHUB_STEP_SUMMARY"
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "**Već merged grana:** ${{ steps.find-branches.outputs.already_merged }}" >> "$GITHUB_STEP_SUMMARY"
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "Nema novih promena za merge." >> "$GITHUB_STEP_SUMMARY"
-
-      - name: 🔒 Validacija workflow-a
-        if: always()
-        run: |
-          echo "### 🔒 Validacija workflow-a" >> "$GITHUB_STEP_SUMMARY"
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-
-          ERRORS=0
-
-          # Proveri da li main branch postoji
-          if git rev-parse --verify origin/main >/dev/null 2>&1; then
-            echo "- ✅ Main branch postoji" >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo "- ❌ Main branch ne postoji" >> "$GITHUB_STEP_SUMMARY"
-            ERRORS=$((ERRORS + 1))
-          fi
-
-          # Proveri git konfiguraciju
-          if git config user.name >/dev/null 2>&1; then
-            echo "- ✅ Git konfiguracija ispravna" >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo "- ❌ Git konfiguracija nije postavljena" >> "$GITHUB_STEP_SUMMARY"
-            ERRORS=$((ERRORS + 1))
-          fi
-
-          # Proveri da li jq postoji
-          if command -v jq >/dev/null 2>&1; then
-            echo "- ✅ jq je dostupan" >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo "- ❌ jq nije instaliran" >> "$GITHUB_STEP_SUMMARY"
-            ERRORS=$((ERRORS + 1))
-          fi
-
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          if [ "$ERRORS" -eq 0 ]; then
-            echo "**Validacija:** ✅ Sve provere prošle" >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo "**Validacija:** ⚠️ $ERRORS problema detektovano" >> "$GITHUB_STEP_SUMMARY"
-          fi
-
-      - name: 📊 Završni izveštaj
-        if: always()
-        run: |
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "---" >> "$GITHUB_STEP_SUMMARY"
-          echo "*🔀 Omega Mega Merge — $(date -u +%Y-%m-%dT%H:%M:%SZ)*" >> "$GITHUB_STEP_SUMMARY"
+            const { proposeSync } = require('./scripts/omega-sync.cjs');
+            await proposeSync({ github, context, core, direction: 'into-main' });
