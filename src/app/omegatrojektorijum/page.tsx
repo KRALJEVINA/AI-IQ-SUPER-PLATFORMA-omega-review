@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import OmegaCatalog from './catalog';
+import OmegaProjects from './projects';
 
 export const metadata: Metadata = {
   title: 'OMEGATROJEKTORIJUM',
-  description: 'SPAJA katalog ideja, bankarski prototip i lokalni filmski studio.',
+  description: 'SPAJA GitHub projekti i statusi povezivanja, katalog ideja i lokalni filmski studio.',
 };
 
 export default function OmegaPage() {
@@ -26,6 +27,8 @@ export default function OmegaPage() {
           <strong>Snimi prvi film</strong><p className="mt-2 text-sm text-slate-300">Kamera i mikrofon uz dozvolu. Preuzmi snimak na svoj uređaj.</p>
         </Link>
       </nav>
+      <a className="inline-block text-cyan-300 underline focus-visible:outline-2" href="#povezani-projekti">Pregled povezanih GitHub projekata</a>
+      <OmegaProjects />
       <OmegaCatalog />
     </div>
   );
