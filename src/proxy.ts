@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { applySecurityHeaders } from '@/lib/security-headers';
+import { applyOmegaStudioMediaPolicy } from '@/lib/omegatrojektorijum/media-policy';
 
 /**
  * 📡 OMEGA Proxy — Request Logger & Monitor
@@ -16,6 +17,7 @@ export function proxy(_request: NextRequest) {
 
   const response = NextResponse.next();
   applySecurityHeaders(response.headers, { withNonce: false });
+  applyOmegaStudioMediaPolicy(response.headers, _request.nextUrl.pathname);
 
   // Dodaj request ID za praćenje
   response.headers.set('X-Request-Id', requestId);
