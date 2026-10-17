@@ -1,3 +1,7 @@
+import type {
+  EXTRONDOL_RELEASE_AUDIT_ACCEPTANCE_EVIDENCE,
+  EXTRONDOL_GOVERNANCE_ACCEPTANCE_EVIDENCE,
+} from './acceptance-evidence';
 import type { ExtrimliExtremZelezaraPretplataIdentityStatus } from '../extrimli-extrem/types';
 import type { ExtrimliExtrondendReport } from '../extrimli-extrondend';
 import type { ExtrimliExtendolReport } from '../extrimli-extendol';
@@ -1739,56 +1743,7 @@ export interface ExtrimliExtrondolDeveloperAndCreateRepoWideReflectionGovernance
   roadmapExecution: {
     roadmapStageId: 'v5-extrondol-release-audit-and-orchestration';
     measurableOutput: 'EXTRONDOL consumes the repo-wide technical profile plus bounded Napoleon Diskaveri discovery-selection alias metadata, LEKSIKON bounded explanation metadata, RADNI PROSTOR + KRALJEVSKI RAD bounded token metadata, KRALJEVSKI DRUŠTVENI POREDAK governance, KRALJEVSKI AKT BEZBEDNOSTI bounded civil-readiness, AI identity-finance governance, KRALJEVSKI BAŠTA UNEVERZITE bounded narrative metadata, additive audio-vizuelni kontrabas package metadata, and primary/supplemental/companion audit visual metadata, then publishes only audit-safe WAWE/review/rollback governance';
-    acceptanceEvidence: readonly [
-      'releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.implementationPackage',
-      'developerAndCreateRepoWideReflection',
-      'releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance',
-      'releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.audioVisualKontrabasPackage',
-      'releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.kraljevskiDrustveniPoredak',
-      'releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.kraljevskiDrustveniPoredak.kraljevskiAktBezbednosti',
-      'releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.kraljevskiBastaUneverzite',
-      'releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.aiIdentityFinanceGovernance',
-      'releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.covecnostAuditVisualReference.supplementalVisualReferences',
-      'releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.covecnostAuditVisualReference.companionAuditVisualReferences',
-      'releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.osnoveRispektProtocol',
-      'releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.aiPlateGovernance',
-      'releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.napoleonDiskaveriSelectionTrack',
-      'releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.eksperimentProgramskiJezikTrack',
-      'releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.ekspirijansProgramskogJezikaTrack',
-      'releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.sarkazamPrivrednaGranaDigitalizmaTrack',
-      'releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.notes1450Track',
-      'releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.saradnjaReadyPackage',
-      'releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.leksikonTrack',
-      'releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.radniProstorTrack',
-      'releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.kraljevskiRadTrack',
-      'releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.montezacijaTrack',
-      'releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.pilotTrack',
-      'releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.devastatorTrack',
-      'releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.deVinciKodTrack',
-      'releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.konstrukcijeIProjektovanjeTrack',
-      'releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.aiIqKonferencijaZaStampuTrack',
-      'spajaKod.publicSignals.developerAndCreateStatus',
-      'spajaKod.publicSignals.markanStatus',
-      'spajaKod.publicSignals.developerAndCreateAudioVisualStatus',
-      'spajaKod.publicSignals.developerAndCreateImplementationStatus',
-      'spajaKod.publicSignals.napoleonDiskaveriStatus',
-      'spajaKod.publicSignals.ekspirijansProgramskogJezikaStatus',
-      'spajaKod.publicSignals.eksperimentProgramskiJezikStatus',
-      'spajaKod.publicSignals.sarkazamPrivrednaGranaDigitalizmaStatus',
-      'spajaKod.publicSignals.notes1450Status',
-      'spajaKod.publicSignals.saradnjaReadyStatus',
-      'spajaKod.publicSignals.leksikonStatus',
-      'spajaKod.publicSignals.radniProstorStatus',
-      'spajaKod.publicSignals.kraljevskiRadStatus',
-      'spajaKod.publicSignals.kraljevskaMontezacijaStatus',
-      'spajaKod.publicSignals.montezacijaStatus',
-      'spajaKod.publicSignals.pilotStatus',
-      'spajaKod.publicSignals.devastatorStatus',
-      'spajaKod.publicSignals.deVinciKodStatus',
-      'spajaKod.publicSignals.konstrukcijeIProjektovanjeStatus',
-      'spajaKod.publicSignals.aiIqKonferencijaZaStampuStatus',
-      'spajaKod.publicSignals.aiPlateStatus'
-    ];
+    acceptanceEvidence: typeof EXTRONDOL_RELEASE_AUDIT_ACCEPTANCE_EVIDENCE;
     rolloutPlan: string;
     rollbackPlan: string;
     humanReviewStatus: 'required-before-promotion';
@@ -2972,25 +2927,7 @@ export interface ExtrimliExtrondolDeveloperAndCreateRepoWideReflection
   roadmapExecution: {
     roadmapStageId: 'v5-extrondol-release-audit-and-orchestration';
     measurableOutput: 'EXTRONDOL consumes the repo-wide technical profile plus bounded Napoleon Diskaveri discovery-selection alias metadata, KRALJEVSKI DRUŠTVENI POREDAK governance, KRALJEVSKI AKT BEZBEDNOSTI bounded civil-readiness, AI identity-finance governance, KRALJEVSKI BAŠTA UNEVERZITE bounded narrative metadata, additive audio-vizuelni kontrabas package metadata, and primary/supplemental/companion audit visual metadata, then publishes only audit-safe WAWE/review/rollback governance';
-    acceptanceEvidence: readonly [
-      'developerAndCreateRepoWideReflection.implementationPackage',
-      'developerAndCreateRepoWideReflection',
-      'developerAndCreateRepoWideReflection.audioVisualKontrabasPackage',
-      'releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance',
-      'developerAndCreateRepoWideReflection.kraljevskiBastaUneverzite',
-      'developerAndCreateRepoWideReflection.covecnostAuditVisualReference.supplementalVisualReferences',
-      'developerAndCreateRepoWideReflection.covecnostAuditVisualReference.companionAuditVisualReferences',
-      'developerAndCreateRepoWideReflection.aiPlateGovernance',
-      'developerAndCreateRepoWideReflection.napoleonDiskaveriSelectionTrack',
-      'developerAndCreateRepoWideReflection.eksperimentProgramskiJezikTrack',
-      'spajaKod.publicSignals.developerAndCreateStatus',
-      'spajaKod.publicSignals.markanStatus',
-      'spajaKod.publicSignals.napoleonDiskaveriStatus',
-      'spajaKod.publicSignals.eksperimentProgramskiJezikStatus',
-      'spajaKod.publicSignals.developerAndCreateAudioVisualStatus',
-      'spajaKod.publicSignals.developerAndCreateImplementationStatus',
-      'spajaKod.publicSignals.aiPlateStatus'
-    ];
+    acceptanceEvidence: typeof EXTRONDOL_GOVERNANCE_ACCEPTANCE_EVIDENCE;
     rolloutPlan: string;
     rollbackPlan: string;
     humanReviewStatus: 'required-before-promotion';
