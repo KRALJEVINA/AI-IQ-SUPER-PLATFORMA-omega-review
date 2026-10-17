@@ -695,7 +695,7 @@ Apsolutni maksimum operativni plan za AI IQ SUPER PLATFORMA — svih 16 nivoa od
 | Owner | @spaja86 |
 | Tracking doc | `docs/MAKS-PLAN-NIVO-LEVL.md` |
 | Changelog | `CHANGELOG.md` v42.36.0 |
-| Deploy status | `public/deploy_status.json` |
+| CI evidence / historical status | Omega Build Actions artifacts per run/attempt; `/deploy_status.json` is historical and unverified; production requires separate evidence. No linked repo change required. |
 
 ### Cross-repo references
 
