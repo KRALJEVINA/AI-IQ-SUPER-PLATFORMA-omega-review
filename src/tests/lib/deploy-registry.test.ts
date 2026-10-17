@@ -14,6 +14,8 @@ import {
   getPlatformsWithHealthCheck,
 } from '../../lib/deploy/deploy-registry';
 
+import { validateDeployRegistryIdentity } from '../../lib/deploy/deploy-registry-validation';
+
 let passed = 0;
 let failed = 0;
 
@@ -89,12 +91,48 @@ function runTests() {
     }
   });
 
-  test('nema dupliranih vercelProjectId-eva u registru', () => {
-    const projectIds = new Set<string>();
-    for (const p of deployRegistry) {
-      assert(!projectIds.has(p.vercelProjectId), `duplirani vercelProjectId: ${p.vercelProjectId}`);
-      projectIds.add(p.vercelProjectId);
+  test('project sharing requires an explicit approved alias', () => {
+    assertEqual(validateDeployRegistryIdentity(deployRegistry).join('; '), '');
+  });
+
+  const copyRegistry = () => deployRegistry.map((entry) => ({ ...entry }));
+
+  test('rejects duplicate logical IDs even for the approved alias', () => {
+    const entries = copyRegistry();
+    entries.push({ ...getDeployPlatformById('mekartor')! });
+    assert(validateDeployRegistryIdentity(entries).some((error) => error.includes('Duplicate platformId')), 'must reject duplicate logical ID');
+  });
+
+  test('rejects an unrelated platform sharing the approved project', () => {
+    const entries = copyRegistry();
+    entries.find((entry) => entry.id === 'io-openui-ao')!.vercelProjectId = 'ai-iq-super-platforma';
+    assert(validateDeployRegistryIdentity(entries).some((error) => error.includes('Unapproved shared')), 'must reject third member');
+  });
+
+  test('rejects accidental sharing between unrelated projects', () => {
+    const entries = copyRegistry();
+    entries.find((entry) => entry.id === 'io-openui-ao')!.vercelProjectId = 'ai-iq-world-bank';
+    assert(validateDeployRegistryIdentity(entries).some((error) => error.includes('Unapproved shared')), 'must reject unapproved pair');
+  });
+
+  for (const id of ['mekartor', 'ai-iq-super-platforma']) {
+    test(`rejects missing alias endpoint: ${id}`, () => {
+      const entries = copyRegistry().filter((entry) => entry.id !== id);
+      assert(validateDeployRegistryIdentity(entries).some((error) => error.includes('Invalid project alias')), 'must reject dangling alias');
+    });
+    test(`rejects project drift: ${id}`, () => {
+      const entries = copyRegistry();
+      entries.find((entry) => entry.id === id)!.vercelProjectId = 'io-openui-ao';
+      assert(validateDeployRegistryIdentity(entries).some((error) => error.includes('Invalid project alias')), 'must reject wrong project');
+    });
+  }
+
+  test('rejects coordinated project drift of both alias endpoints', () => {
+    const entries = copyRegistry();
+    for (const entry of entries) {
+      if (['mekartor', 'ai-iq-super-platforma'].includes(entry.id)) entry.vercelProjectId = 'io-openui-ao';
     }
+    assert(validateDeployRegistryIdentity(entries).length > 0, 'must retain the reviewed physical project');
   });
 
   // ── 2. Trigger-capable platforms ──────────────────────────────────────────

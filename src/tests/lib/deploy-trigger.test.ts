@@ -170,6 +170,39 @@ async function runTests() {
     }
   });
 
+  await test('Mekartor and parent retain distinct hook lookup and logical result IDs', async () => {
+    const originalFetch = globalThis.fetch;
+    const names = ['VERCEL_DEPLOY_HOOK_AI_IQ', 'VERCEL_DEPLOY_HOOK_MEKARTOR'];
+    const saved = names.map((name) => process.env[name]);
+    const calls: string[] = [];
+    globalThis.fetch = async (input, init) => {
+      calls.push(String(input));
+      assert(init?.method === 'POST', 'hook must use POST');
+      return new Response(JSON.stringify({ job: { id: 'mock-deployment' } }), { status: 200 });
+    };
+    try {
+      process.env[names[0]] = 'https://parent.invalid/mock';
+      process.env[names[1]] = 'https://mekartor.invalid/mock';
+      for (const platformId of ['ai-iq-super-platforma', 'mekartor']) {
+        const result = await triggerPlatformDeploy({ platformId, environment: 'staging', triggeredBy: 'test' });
+        assert(result.success && result.platformId === platformId, 'must preserve logical identity');
+      }
+      assert(calls.join(',') === 'https://parent.invalid/mock,https://mekartor.invalid/mock', 'must not redirect alias hooks');
+      delete process.env[names[1]];
+      const missing = await triggerPlatformDeploy({ platformId: 'mekartor', environment: 'staging', triggeredBy: 'test' });
+      assert(!missing.success && missing.message.includes(names[1]), 'must not fall back to parent hook');
+      const denied = await triggerPlatformDeploy({ platformId: 'mekartor', environment: 'production', triggeredBy: 'test' });
+      assert(!denied.success && denied.message.includes('DEPLOY_PRODUCTION'), 'alias retains production confirmation');
+      assert(calls.length === 2, 'blocked requests must not call hooks');
+    } finally {
+      globalThis.fetch = originalFetch;
+      names.forEach((name, index) => {
+        if (saved[index] === undefined) delete process.env[name];
+        else process.env[name] = saved[index];
+      });
+    }
+  });
+
   // ── 2. recordDeployHistory & getDeployHistory ──────────────────────────────
 
   console.log('\n📦 2. Deploy History');
