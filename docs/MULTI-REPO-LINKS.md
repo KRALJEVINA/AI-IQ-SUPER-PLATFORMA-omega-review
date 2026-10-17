@@ -25,6 +25,46 @@ This document formalizes coordination between `spaja86/AI-IQ-SUPER-PLATFORMA` an
 | `OPENAI` | `external-provider` | External AI/provider boundary | Inbound: provider/compliance readiness / Outbound: provider dependency summary | provider status, compliance posture, activation blocker, downstream reference | API keys, billing credentials, provider-side secrets | External-provider boundary only, no mirrored runtime source-of-truth |
 | `SPAJANIKOPENEVOLUTION` | `narrative-only` | Narrative/evolutionary ecosystem track | Inbound: bounded reflection signals / Outbound: documentation-safe narrative summary | narrative readiness, governance posture, audit reference | operational payloads, production formulas, security data | Narrative-only reflection, never runtime-coupled |
 
+## OMEGATROJEKTORIJUM — provereni GitHub projekti (2026-10-16)
+
+Pregled `/omegatrojektorijum#povezani-projekti` koristi `src/lib/omegatrojektorijum-projects.ts` kao ručno pregledan snapshot. Gornji federation registry ostaje kanonski za granice povezivanja. Termini `runtime-integrated` i `summary-synced` iz arhitekture nisu sami po sebi dokaz deploymenta ili izvršene sinhronizacije.
+
+| Projekat / proverena GitHub veza | Veza u federation registru | Potvrđeno u ovoj proveri |
+|---|---|---|
+| [spaja86/AI-IQ-SUPER-PLATFORMA](https://github.com/spaja86/AI-IQ-SUPER-PLATFORMA) | runtime-integrated | Lokalni katalog, studio i bankarski prototip postoje u kodu; produkcija neproverena |
+| [spaja86/IO-OPENUI-AO](https://github.com/spaja86/IO-OPENUI-AO) | summary-synced | Dokumentaciona koordinacija; funkcionalna razmena nije potvrđena |
+| [spaja86/Ai-Iq-World-Bank](https://github.com/spaja86/Ai-Iq-World-Bank) | policy-linked | Informativni sajt i edukativni kalkulator; dokumentaciona veza |
+| [spaja86/Ai-Iq-Menja-nica](https://github.com/spaja86/Ai-Iq-Menja-nica) | policy-linked | Sajt i roadmap; dokumentaciona veza, bez potvrde finansijske operative |
+| [spaja86/Kompanija-SPAJA](https://github.com/spaja86/Kompanija-SPAJA) | policy-linked | Postojanje potvrđeno kroz ovlašćeni GitHub metadata pregled; privatan pristup, samo već javno opisana namena |
+| [spaja86/SVETSKA-ORGANIZACIJA](https://github.com/spaja86/SVETSKA-ORGANIZACIJA) | policy-linked | Dokumentacija i tehnički skelet; dokumentaciona veza |
+| [spaja86/SpajaNikOpenEvolution](https://github.com/spaja86/SpajaNikOpenEvolution) | narrative-only | Migraciona priprema i specifikacije; budući plan, runtime nije potvrđen |
+
+GitHub pretraga `user:spaja86` vratila je 17 dostupnih repozitorijuma (prva stranica, limit 100). Prvo su mapirani navedeni domeni iz postojećeg registra. Preostalih 10 nisu automatski uključeni: `OMEGA-AI-za-Vercel-`, `openai-platform`, `Read-data-from-database-and-write-to-excel-by-using-java-Swing-GUI`, `hello-world`, `Input-Output-za-kopilota-da-mo-e-da-komunicira-sa-korsnicima-akticno`, `-OMEGA-AI-za-Google-`, `openai-cookbook`, `-OMEGA-AI-5-persona-za-Facebook-i-Instagram-i-TikTok-i-Threads-i-YoutYube-`, `HelooWorld`, `OMEGA-AI-za-GIT-HUB`. Postojanje repozitorijuma nije dokaz integracije. `OPENAI` iz federation registra označava spoljnog provajdera, pa nije poistovećen sa korisničkim `openai-platform` ili fork-om `openai-cookbook`.
+
+Dokazi namene: javni `README.md` fajlovi navedenih projekata, pregledani 2026-10-16. Zabeleženi blob SHA: IO `94d2cd670dbfef684efaca81e63d74c074cfbc13`, Bank `986a5a58fd66e403c7874c723c2df70e90bb29e6`, Menjačnica `648ca8bbe65d9c1c1dbf3454b9aa9b13818bcc0c`, Organizacija `f95b796a6157baf588002d3c8faf04fa4a325b94`, Evolution `62ed8422eec43c8859f082cca84afed4ecddf0a4`. Centralni kod i federation dokaz su vezani za commit `a6c7c332a06698e04256ebf64f1c0cb4776ee46f`. README veze ka `main` mogu se promeniti; datum je datum provere, ne live status. Privatni sadržaj Kompanije nije kopiran.
+
+Nema pozivanja GitHub API-ja pri otvaranju stranice, tajni, deploy hook-ova ili automatskog pokretanja povezanih servisa. Status `functional` se može uvesti tek uz verzionisan ugovor, konkretan uspešan integracioni test i ljudski pregled. Stari `src/lib/platforme.ts` ima deklarativne `aktivna/100%` oznake; novi pregled ih ne koristi kao operativne dokaze. Konceptualni katalog ostaje odvojen i zadržava status ideja.
+
+Cross-repo impact: **No linked repo change required**. IO downstream reference ostaje summary-only; ovaj PR dodaje javnu navigaciju, bez slanja ili sinhronizacije podataka i bez izmena drugih repozitorijuma.
+
+Provera: `node --import tsx src/tests/lib/omegatrojektorijum-projects.test.ts` (render cele početne stranice, GitHub/evidence veze, statusi, privatna oznaka, postojeće radne rute i katalog), plus postojeći `omegatrojektorijum.test.ts`. Novi test automatski ulazi u postojeći `npm run test:lib` / `test:ci` runner. Bez nove zavisnosti.
+
+### Provera ove izmene i granica isporuke
+
+- Ciljani test prikaza projekata i postojeći test kataloga: prolaze.
+- ESLint za tri nova/izmenjena TypeScript/TSX fajla i novi test: prolazi.
+- Izolovana TypeScript provera početne stranice, uvezenih komponenti/podataka i novog testa: 0 dijagnostika.
+- Direktni loader `node --import tsx src/tests/smoke/smoke.test.ts`: 43/43 prolazi. To nije dokaz produkcione spremnosti.
+- `npm test` i `npm run test:smoke`: blokira lokalni tsx CLI IPC `listen EPERM`; standardni suite nije potvrđen.
+- `npm run predeploy:check`: exit 0, status warning; postojeća maksimus2/maksimus3 contract upozorenja.
+- Puni `tsc --noEmit`: pada u postojećim modulima van ove izmene; nema dijagnostika u novim/izmenjenim fajlovima.
+- `npm run build`: kompilacija uspešna za 81 s; proces prekinut signalom Killed (exit 137) tokom TypeScript faze. Pun build nije potvrđen.
+- Browser interakcije aplikacije, stvarno snimanje i produkcioni deployment nisu provereni ovom izmenom. Navigacija je proverena renderovanjem cele stranice, ne browser E2E testom.
+
+Za PR je pripremljen odvojen fork `KRALJEVINA/AI-IQ-SUPER-PLATFORMA-omega-review`, jer postojeći `omega-mega-merge.yml` i `omega-branch-sync.yml` u upstream-u pokušavaju direktno spajanje grana. GitHub je potvrdio da su nasleđeni workflow-i u fork-u isključeni; nisu uključeni. PR treba ostaviti kao draft, bez auto-merge oznaka. Nisu menjani upstream workflow-i, produkciona podešavanja, tajne, zavisnosti ili plaćeni servisi.
+
+Rollout: ljudski pregled draft PR-a i rešavanje postojećih quality gate blokera pre svake posebne odluke o spajanju/objavljivanju. Rollback: ukloniti import/prikaz `OmegaProjects`, novi lib/komponentu/test i ovu dopunu dokumentacije. Nema migracija ili promena podataka. KPI: svih 7 prepoznatih projekata ima stvarnu GitHub vezu, namenu, granicu i dokaz; nijedan spoljni projekat nije bez dokaza označen funkcionalno integrisanim.
+
 ## `KRALJEVSTVO` execution model
 
 - Initial scope lock remains `DEVELOPER AND CREATE == VRH PROGRAMSKOG EKVILADENTA`.
