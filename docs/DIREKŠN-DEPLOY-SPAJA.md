@@ -181,7 +181,7 @@ Svi workflow-i postoje i aktivni su. Potvrditi da svaki prolazi na `main` branch
 - [ ] Vercel Git Integration automatski deploye pri merge na `main`
 - [ ] Verifikovati: `GET /api/health` → `status: healthy`, `zdravlje >= 80`
 - [ ] Verifikovati: `GET /api/status` → `operativa.readyState=READY`
-- [ ] Verifikovati: `GET /deploy_status.json` → `status: success`
+- [ ] Proveriti tačan Omega Build run/attempt i CI artifact; odvojeno proveriti deployment reviziju i post-deploy health. `/deploy_status.json` je istorijski zapis.
 
 ### 5b. Nova Generacija (Staged feature flag rollout)
 - [ ] Feature flag `nova-generacija`: 20% canary aktivan → 50% → 100%
@@ -335,7 +335,7 @@ Vidi: [`docs/GO-LIVE.md#rollback-plan`](./GO-LIVE.md#rollback-plan)
 
 - [ ] `CHANGELOG.md` ažuriran sa svim promenama u ovoj verziji
 - [ ] `docs/GO-LIVE.md` → Go/No-Go tabela → svi unosi = ✅ GO
-- [ ] `public/deploy_status.json` ažuriran sa finalnim commit SHA i timestamp
+- [ ] Sačuvati Omega Build CI artifact (verzija, SHA, vreme, rezultat); produkcioni deployment potvrditi zasebnim dokazima. Ne ažurirati javni istorijski snapshot iz CI-ja.
 - [ ] `docs/MULTI-REPO-LINKS.md` ažuriran sa DIREKŠN-DEPLOY audit referencom
 - [ ] Tim notifikovan o svim novim env varijablama
 - [ ] GitHub governance matrica potvrđena: `spaja86` owner, billing owner, repo admin backup, workflow owner

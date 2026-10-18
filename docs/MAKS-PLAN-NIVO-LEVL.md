@@ -230,7 +230,7 @@ NIVO 0 (Governance) → NIVO 1 (Quality Gates) → NIVO 2 (Secrets)
 - [ ] Vercel Git Integration auto-deploys na merge na main
 - [ ] `GET /api/health` → `status: healthy`, `zdravlje >= 80`
 - [ ] `GET /api/status` → `operativa.readyState=READY`
-- [ ] `GET /deploy_status.json` → `status: success`
+- [ ] Proveriti tačan Omega Build run/attempt i CI artifact; odvojeno proveriti deployment reviziju i post-deploy health. `/deploy_status.json` je istorijski zapis.
 
 ### 6b. IO OPENUI AO (`platforms/io-openui-ao/`)
 - [ ] Build + test lokalno
@@ -412,7 +412,7 @@ Vidi: `docs/GO-LIVE.md#rollback-plan` za detalje.
 
 - [ ] `CHANGELOG.md` ažuriran sa svim promenama ove verzije
 - [ ] `docs/GO-LIVE.md` → Go/No-Go tabela → sve stavke `✅ GO`
-- [ ] `public/deploy_status.json` ažuriran sa finalnim commit SHA i timestamp-om
+- [ ] Sačuvati Omega Build CI artifact (verzija, SHA, vreme, rezultat); produkcioni deployment potvrditi zasebnim dokazima. Ne ažurirati javni istorijski snapshot iz CI-ja.
 - [ ] `docs/MULTI-REPO-LINKS.md` ažuriran sa MAKS PLAN audit trail referencom
 - [ ] Tim obavešten o svim novim env vars
 - [ ] GitHub governance matrix potvrđena: `spaja86` owner, billing owner, repo admin backup, workflow owner
