@@ -1,6 +1,8 @@
 import type { ASTNode } from './parser';
 
-function normalizeCommandName(name: string, arg: string): { runtimeMethod: string; runtimeArg: string } {
+export type RuntimeMethod = 'moze' | 'zelim' | 'do' | 'wait' | 'assert' | 'priv' | 'aktiviraj' | 'izgradi' | 'pokreni';
+
+export function resolveRuntimeCall(name: string, arg: string): { runtimeMethod: RuntimeMethod; runtimeArg: string } {
   const upper = name.toLocaleUpperCase('sr-RS');
 
   if (upper === 'MOŽE' || upper === 'MOZE') return { runtimeMethod: 'moze', runtimeArg: arg };
@@ -10,6 +12,9 @@ function normalizeCommandName(name: string, arg: string): { runtimeMethod: strin
   if (upper === 'ASSERT') return { runtimeMethod: 'assert', runtimeArg: arg };
   if (upper === 'PRIV') return { runtimeMethod: 'priv', runtimeArg: arg };
   if (upper === 'ECHO') return { runtimeMethod: 'do', runtimeArg: `ECHO ${arg}`.trim() };
+  if (upper === 'AKTIVIRAJ') return { runtimeMethod: 'aktiviraj', runtimeArg: arg };
+  if (upper === 'IZGRADI') return { runtimeMethod: 'izgradi', runtimeArg: arg };
+  if (upper === 'POKRENI') return { runtimeMethod: 'pokreni', runtimeArg: arg };
 
   throw new Error(`Transpajler ne podržava naredbu: "${name}"`);
 }
@@ -21,7 +26,7 @@ export function transpile(ast: ASTNode[]): string {
     }
 
     const arg = node.args.join(' ');
-    const { runtimeMethod, runtimeArg } = normalizeCommandName(node.name, arg);
+    const { runtimeMethod, runtimeArg } = resolveRuntimeCall(node.name, arg);
 
     return `  await runtime.${runtimeMethod}(${JSON.stringify(runtimeArg)}, ctx);`;
   });

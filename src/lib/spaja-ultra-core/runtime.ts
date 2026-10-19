@@ -1,3 +1,6 @@
+import { executeAst } from './execute';
+import { compileProgram, validateProgramName, type BuildArtifact } from './program';
+
 export interface AuditRecord {
   id: string;
   timestamp: string;
@@ -15,6 +18,7 @@ export interface RuntimeOptions {
 
 export interface RuntimeContext {
   roles?: string[];
+  programi?: Record<string, string>;
   onOutput?: (line: string) => void;
   [key: string]: unknown;
 }
@@ -359,8 +363,49 @@ function evaluateAssertionExpression(expression: string, ctx: RuntimeContext): b
 
 export class SpajaRuntime {
   private readonly auditLog: AuditRecord[] = [];
+  private active = false;
+  private readonly builds = new Map<string, ReturnType<typeof compileProgram>>();
 
   constructor(private readonly options: RuntimeOptions = {}) {}
+
+  async aktiviraj(target: string, _ctx: RuntimeContext): Promise<void> {
+    await this.withAudit('AKTIVIRAJ', target, async () => {
+      if (target !== 'jezgro') throw new Error('AKTIVIRAJ prihvata samo cilj: jezgro.');
+      this.active = true;
+    });
+  }
+
+  async izgradi(name: string, ctx: RuntimeContext): Promise<void> {
+    await this.withAudit('IZGRADI', name, async () => {
+      this.requireActive();
+      validateProgramName(name);
+      const programs = ctx.programi;
+      if (!programs || !Object.prototype.hasOwnProperty.call(programs, name) || typeof programs[name] !== 'string') {
+        throw new Error(`Program nije pronađen kao tekst u ctx.programi: ${name}`);
+      }
+      if (!this.builds.has(name) && this.builds.size >= 16) throw new Error('Dozvoljeno je najviše 16 programa po sesiji.');
+      const built = compileProgram(name, programs[name]);
+      this.builds.set(name, built); // A failed compile leaves the prior build intact.
+    });
+  }
+
+  async pokreni(name: string, ctx: RuntimeContext): Promise<void> {
+    await this.withAudit('POKRENI', name, async () => {
+      this.requireActive();
+      validateProgramName(name);
+      const built = this.builds.get(name);
+      if (!built) throw new Error(`Najpre IZGRADI program: ${name}`);
+      await executeAst(built.ast, this, ctx);
+    });
+  }
+
+  getBuilds(): BuildArtifact[] {
+    return [...this.builds.values()].map(({ artifact }) => ({ ...artifact }));
+  }
+
+  private requireActive(): void {
+    if (!this.active) throw new Error('Najpre AKTIVIRAJ: jezgro u ovoj sesiji.');
+  }
 
   async moze(permission: string, _ctx: RuntimeContext): Promise<void> {
     await this.withAudit('MOŽE', permission, async () => {
