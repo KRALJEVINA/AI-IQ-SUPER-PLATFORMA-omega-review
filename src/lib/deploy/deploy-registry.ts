@@ -17,7 +17,7 @@ export type DeployEnvironment = 'dev' | 'staging' | 'production';
 export type DeployPlatformStatus = 'aktivan' | 'u_pripremi' | 'neaktivan' | 'greska';
 
 export interface DeployPlatformEntry {
-  /** Jedinstveni identifikator platforme */
+  /** Jedinstveni logički platformId (koristi se za lookup, hook i audit) */
   id: string;
   /** Naziv platforme */
   naziv: string;
@@ -25,7 +25,7 @@ export interface DeployPlatformEntry {
   opis: string;
   /** Ikona */
   ikona: string;
-  /** Vercel project ID */
+  /** Fizički Vercel projekat; deljenje samo kroz allowedDeployProjectAliases */
   vercelProjectId: string;
   /** Vercel deploy hook secret env var name (npr. VERCEL_DEPLOY_HOOK_AI_IQ) */
   deployHookEnvVar: string | null;

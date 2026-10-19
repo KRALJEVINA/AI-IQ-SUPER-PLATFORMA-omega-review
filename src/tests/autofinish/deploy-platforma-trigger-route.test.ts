@@ -65,6 +65,11 @@ async function runTests(): Promise<void> {
     finally { process.env.OMEGA_JWT_SECRET = secret; }
   });
 
+  await test('Mekartor alias does not bypass ACCESS or ADMIN authorization', async () => {
+    const body = { platformId: 'mekartor', environment: 'staging' };
+    assert((await POST(makeRequest(body, '') as never)).status === 401, 'alias must require ACCESS token');
+    const token = await ΩAuthProvider.issueToken({ ...identity, id: 'alias-test-user', clearanceLevel: ΩClearanceLevel.USER }, []);
+    assert((await POST(makeRequest(body, token.value) as never)).status === 403, 'alias must require ADMIN');
   await test('rejects offline providers and invalid JSON body shapes', async () => {
     for (const provider of ['spaja-local', 'unknown', null]) {
       assert((await POST(makeRequest({ provider, platformId: 'ai-iq-super-platforma', environment: 'dev' }) as never)).status === 400, 'must not trigger Vercel');
