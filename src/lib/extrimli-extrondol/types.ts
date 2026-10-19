@@ -90,7 +90,7 @@ export interface ExtrimliDeveloperCreateScopeLock {
 
 export interface ExtrimliSurfaceHealthSnapshot {
   generatedFrom: '/api/extrimli/extrondol';
-  surfaces: [
+  surfaces: readonly [
     {
       route: '/api/extrimli/extrem';
       status: ExtrimliSpajaKodPublicStatus;
@@ -323,7 +323,7 @@ export interface ExtrimliExtrondolAiPlateEnterprisePackageReadiness {
   downstreamSyncRequired: true;
   rollbackPlanRequired: true;
   finopsGuardrailsRequired: true;
-  blockers: string[];
+  blockers: readonly string[];
 }
 
 export interface ExtrimliExtrondolB2bScope {
@@ -419,6 +419,10 @@ export interface ExtrimliExtrondolB2bReadiness {
     syncedFields: readonly string[];
   };
   governanceDecisions: {
+    funkcionalnoProgramiranjeUzvisenogMisanogTokaGovernance: ExtrimliExtrondolReleaseAuditSummary['funkcionalnoProgramiranjeUzvisenogMisanogTokaGovernance'];
+    funkcionalnoProgramiranjePravednogMisaonogTokaGovernance: ExtrimliExtrondolReleaseAuditSummary['funkcionalnoProgramiranjePravednogMisaonogTokaGovernance'];
+    radniTaktMozgaMislilacGovernance: ExtrimliExtrondolReleaseAuditSummary['radniTaktMozgaMislilacGovernance'];
+    paradijogonalnoProgrimiranjeGovernance: ExtrimliExtrondolReleaseAuditSummary['paradijogonalnoProgrimiranjeGovernance'];
     onboardingHold: boolean;
     rolloutFreeze: boolean;
     escalationRequired: boolean;
@@ -436,7 +440,7 @@ export interface ExtrimliExtrondolB2bReadiness {
       status: ExtrimliExtremProfilerReport['semaMuSemaFormula']['status'];
       muSemaConclusion: ExtrimliExtremProfilerReport['semaMuSemaFormula']['muSemaConclusion'];
       formulaHolds: boolean;
-      blockerReasons: string[];
+      blockerReasons: readonly string[];
     };
     aiPlateEnterprisePackage: ExtrimliExtrondolAiPlateEnterprisePackageReadiness;
     petljeGovernance: {
@@ -482,7 +486,7 @@ export interface ExtrimliExtrondolB2bReadiness {
     watchReasons: string[];
   };
   developerAndCreateRepoWideReflectionGovernance: {
-    sourceOfTruth: '/api/extrimli/extrem';
+    sourceOfTruth: '/api/extrimli/extrondol';
     status: ExtrimliExtremProfilerReport['dokDikDakDukConsistencyHealth']['developerAndCreateRepoWideReflection']['readiness']['status'];
     canonicalMapeUmaScopeLock: ExtrimliExtremProfilerReport['dokDikDakDukConsistencyHealth']['developerAndCreateRepoWideReflection']['canonicalMapeUmaScopeLock'];
     readinessScore: number;
@@ -549,8 +553,8 @@ export interface ExtrimliExtrondolObjektnaProngilacijaGovernance {
     spajaKod: 'public-encapsulated-boundary';
   };
   waweImpact: {
-    currentWave: ExtrimliExtrondolWaweStage;
-    eligibleNextWave: ExtrimliExtrondolWaweStage;
+    currentWawe: ExtrimliExtrondolWaweStage;
+    eligibleNextWawe: ExtrimliExtrondolWaweStage;
     promotionFreeze: boolean;
     stageRules: readonly [
       { stage: 'WAWE-1'; requirement: string },
@@ -653,8 +657,8 @@ export interface ExtrimliExtrondolSinemetrickoProgramiranjeGovernance {
     dakDuk: 'EXTRONDOL';
   };
   waweImpact: {
-    currentWave: ExtrimliExtrondolWaweStage;
-    eligibleNextWave: ExtrimliExtrondolWaweStage;
+    currentWawe: ExtrimliExtrondolWaweStage;
+    eligibleNextWawe: ExtrimliExtrondolWaweStage;
     promotionFreeze: boolean;
     reviewRequiredBeforeWideRollout: boolean;
   };
@@ -795,6 +799,7 @@ export interface ExtrimliExtrondolRadniTaktMozgaMislilacGovernance {
   contractVersion: typeof EXTRONDOL_RADNI_TAKT_MOZGA_MISLILAC_CONTRACT_VERSION;
   additiveOnly: true;
   status: ExtrimliExtremProfilerReport['radniTaktMozgaMislilac']['readiness']['status'];
+  scoreAdjustment: number;
   readinessScore: number;
   conflictPressurePercent: number;
   routineConsistencyPercent: number;
@@ -826,10 +831,10 @@ export interface ExtrimliExtrondolRadniTaktMozgaMislilacGovernance {
     title: 'EPILOGIJA ČOVEČANSTVA';
     canonicalNarrativeId: 'priroda-zdrav-zivot-covecanstvo';
     includedInAuditSummary: true;
-    citationPresent: true;
-    visualReferencePresent: true;
-    imageToSignalProfilePresent: true;
-    ownershipLockPreserved: true;
+    citationPresent: boolean;
+    visualReferencePresent: boolean;
+    imageToSignalProfilePresent: boolean;
+    ownershipLockPreserved: boolean;
     interpretationLayer: 'educational-development-learning-discipline-ethics-signal';
     flowLockPreserved: true;
     packageOutputs: readonly string[];
@@ -839,6 +844,16 @@ export interface ExtrimliExtrondolRadniTaktMozgaMislilacGovernance {
 }
 
 export interface ExtrimliExtrondolDeveloperAndCreateRepoWideReflectionGovernance {
+  additiveFacultyAndAgricultureTracks: ExtrimliExtrondolDeveloperAndCreateRepoWideReflectionGovernance['universityPublicSummary']['additiveFacultyAndAgricultureTracks'];
+  inspektori: ExtrimliExtremProfilerReport['dokDikDakDukConsistencyHealth']['developerAndCreateRepoWideReflection']['inspektori'] & {
+    sourceOfTruth: '/api/extrimli/extrondol';
+    technicalSignalSource: '/api/extrimli/extrem';
+    publicBoundary: '/api/extrimli/spaja-kod';
+    reviewRequiredBeforeWideRollout: boolean;
+    escalatedReviewRequiredBeforeWideRollout: boolean;
+    complianceReviewRequired: true;
+    downstreamSync: 'follow-up-only-until-io-openui-ao-adopts-audit-safe-summary';
+  };
   term: 'DEVELOPER AND CREATE';
   mainManifestDocument: typeof DEVELOPER_CREATE_VRH_MAIN_MANIFEST_DOCUMENT;
   canonicalNarrativeSentence: ExtrimliExtremProfilerReport['dokDikDakDukConsistencyHealth']['developerAndCreateRepoWideReflection']['canonicalNarrativeSentence'];
@@ -1011,7 +1026,7 @@ export interface ExtrimliExtrondolDeveloperAndCreateRepoWideReflectionGovernance
     promotionFreeze: boolean;
     reviewRequiredBeforeWideRollout: boolean;
   };
-  covecnostAuditVisualReference: ExtrimliExtremProfilerReport['dokDikDakDukConsistencyHealth']['developerAndCreateRepoWideReflection']['covecnostAuditVisualReference'];
+  covecnostAuditVisualReference: Omit<ExtrimliExtremProfilerReport['dokDikDakDukConsistencyHealth']['developerAndCreateRepoWideReflection']['covecnostAuditVisualReference'], 'visualSemantics' | 'technicalReadinessBinding'>;
   implementationPackage: ExtrimliExtremProfilerReport['dokDikDakDukConsistencyHealth']['developerAndCreateRepoWideReflection']['implementationPackage'] & {
     currentWawe: ExtrimliExtrondolWaweStage;
     eligibleNextWawe: ExtrimliExtrondolWaweStage;
@@ -1155,6 +1170,7 @@ export interface ExtrimliExtrondolDeveloperAndCreateRepoWideReflectionGovernance
       'developerAndCreateRepoWideReflection.functionRegistryTrack',
       'releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.functionRegistryTrack',
       'spajaKod.publicSignals.functionRegistryStatus',
+      'spajaKod.publicSignals.spajaNikOpenEvolutionFunctionBackupStatus',
       'spajaKod.publicSignals.cliFunctionBackdownInovacePaidSpajicnikolaStatus',
       'spajaKod.developerAndCreateImplementationPackage.functionRegistrySummary'
     ];
@@ -1391,8 +1407,8 @@ export interface ExtrimliExtrondolDeveloperAndCreateRepoWideReflectionGovernance
     sourceOfTruth: '/api/extrimli/extrem';
     governanceSource: '/api/extrimli/extrondol';
     publicBoundary: '/api/extrimli/spaja-kod';
-    currentWave: ExtrimliExtrondolWaweStage;
-    eligibleNextWave: ExtrimliExtrondolWaweStage;
+    currentWawe: ExtrimliExtrondolWaweStage;
+    eligibleNextWawe: ExtrimliExtrondolWaweStage;
     promotionFreeze: boolean;
     reviewRequiredBeforeWideRollout: boolean;
     reviewPosture: 'ALIGNED' | 'WATCH' | 'REVIEW_REQUIRED';
@@ -1434,46 +1450,6 @@ export interface ExtrimliExtrondolDeveloperAndCreateRepoWideReflectionGovernance
       humanReviewStatus: 'required-before-promotion';
       downstreamReference: 'docs/MULTI-REPO-LINKS.md -> spaja86/IO-OPENUI-AO (summary-only)';
     };
-    pilotTrack: ExtrimliExtremProfilerReport['dokDikDakDukConsistencyHealth']['developerAndCreateRepoWideReflection']['pilotTrack'] & {
-      sourceOfTruth: '/api/extrimli/extrem';
-      governanceSource: '/api/extrimli/extrondol';
-      publicBoundary: '/api/extrimli/spaja-kod';
-      currentWave: ExtrimliExtrondolWaweStage;
-      eligibleNextWave: ExtrimliExtrondolWaweStage;
-      promotionFreeze: boolean;
-      reviewRequiredBeforeWideRollout: boolean;
-      reviewPosture: 'ALIGNED' | 'WATCH' | 'REVIEW_REQUIRED';
-      rolloutPlan: string;
-      rollbackPlan: string;
-      humanReviewStatus: 'required-before-promotion';
-      acceptanceEvidence: readonly [
-        'developerAndCreateRepoWideReflection.pilotTrack',
-        'releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.pilotTrack',
-        'spajaKod.publicSignals.pilotStatus',
-        'spajaKod.developerAndCreateImplementationPackage.pilotSummary'
-      ];
-      downstreamReference: 'docs/MULTI-REPO-LINKS.md -> spaja86/IO-OPENUI-AO (summary-only)';
-    };
-    devastatorTrack: ExtrimliExtremProfilerReport['dokDikDakDukConsistencyHealth']['developerAndCreateRepoWideReflection']['devastatorTrack'] & {
-      sourceOfTruth: '/api/extrimli/extrem';
-      governanceSource: '/api/extrimli/extrondol';
-      publicBoundary: '/api/extrimli/spaja-kod';
-      currentWave: ExtrimliExtrondolWaweStage;
-      eligibleNextWave: ExtrimliExtrondolWaweStage;
-      promotionFreeze: boolean;
-      reviewRequiredBeforeWideRollout: boolean;
-      reviewPosture: 'ALIGNED' | 'WATCH' | 'REVIEW_REQUIRED';
-      rolloutPlan: string;
-      rollbackPlan: string;
-      humanReviewStatus: 'required-before-promotion';
-      acceptanceEvidence: readonly [
-        'developerAndCreateRepoWideReflection.devastatorTrack',
-        'releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.devastatorTrack',
-        'spajaKod.publicSignals.devastatorStatus',
-        'spajaKod.developerAndCreateImplementationPackage.devastatorSummary'
-      ];
-      downstreamReference: 'docs/MULTI-REPO-LINKS.md -> spaja86/IO-OPENUI-AO (summary-only)';
-    };
     kraljevskaMontezacijaApprovalPackage: {
       canonicalAlias: ExtrimliExtremProfilerReport['dokDikDakDukConsistencyHealth']['developerAndCreateRepoWideReflection']['montezacijaTrack']['kraljevskaMontezacijaApprovalPackage']['canonicalAlias'];
       status: ExtrimliExtremProfilerReport['dokDikDakDukConsistencyHealth']['developerAndCreateRepoWideReflection']['montezacijaTrack']['kraljevskaMontezacijaApprovalPackage']['status'];
@@ -1490,6 +1466,46 @@ export interface ExtrimliExtrondolDeveloperAndCreateRepoWideReflectionGovernance
       'spajaKod.publicSignals.kraljevskaMontezacijaStatus',
       'spajaKod.publicSignals.montezacijaStatus',
       'spajaKod.developerAndCreateImplementationPackage.montezacijaSummary'
+    ];
+    downstreamReference: 'docs/MULTI-REPO-LINKS.md -> spaja86/IO-OPENUI-AO (summary-only)';
+  };
+  pilotTrack: ExtrimliExtremProfilerReport['dokDikDakDukConsistencyHealth']['developerAndCreateRepoWideReflection']['pilotTrack'] & {
+    sourceOfTruth: '/api/extrimli/extrem';
+    governanceSource: '/api/extrimli/extrondol';
+    publicBoundary: '/api/extrimli/spaja-kod';
+    currentWave: ExtrimliExtrondolWaweStage;
+    eligibleNextWave: ExtrimliExtrondolWaweStage;
+    promotionFreeze: boolean;
+    reviewRequiredBeforeWideRollout: boolean;
+    reviewPosture: 'ALIGNED' | 'WATCH' | 'REVIEW_REQUIRED';
+    rolloutPlan: string;
+    rollbackPlan: string;
+    humanReviewStatus: 'required-before-promotion';
+    acceptanceEvidence: readonly [
+      'developerAndCreateRepoWideReflection.pilotTrack',
+      'releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.pilotTrack',
+      'spajaKod.publicSignals.pilotStatus',
+      'spajaKod.developerAndCreateImplementationPackage.pilotSummary'
+    ];
+    downstreamReference: 'docs/MULTI-REPO-LINKS.md -> spaja86/IO-OPENUI-AO (summary-only)';
+  };
+  devastatorTrack: ExtrimliExtremProfilerReport['dokDikDakDukConsistencyHealth']['developerAndCreateRepoWideReflection']['devastatorTrack'] & {
+    sourceOfTruth: '/api/extrimli/extrem';
+    governanceSource: '/api/extrimli/extrondol';
+    publicBoundary: '/api/extrimli/spaja-kod';
+    currentWave: ExtrimliExtrondolWaweStage;
+    eligibleNextWave: ExtrimliExtrondolWaweStage;
+    promotionFreeze: boolean;
+    reviewRequiredBeforeWideRollout: boolean;
+    reviewPosture: 'ALIGNED' | 'WATCH' | 'REVIEW_REQUIRED';
+    rolloutPlan: string;
+    rollbackPlan: string;
+    humanReviewStatus: 'required-before-promotion';
+    acceptanceEvidence: readonly [
+      'developerAndCreateRepoWideReflection.devastatorTrack',
+      'releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.devastatorTrack',
+      'spajaKod.publicSignals.devastatorStatus',
+      'spajaKod.developerAndCreateImplementationPackage.devastatorSummary'
     ];
     downstreamReference: 'docs/MULTI-REPO-LINKS.md -> spaja86/IO-OPENUI-AO (summary-only)';
   };
@@ -1742,7 +1758,7 @@ export interface ExtrimliExtrondolDeveloperAndCreateRepoWideReflectionGovernance
   };
   roadmapExecution: {
     roadmapStageId: 'v5-extrondol-release-audit-and-orchestration';
-    measurableOutput: 'EXTRONDOL consumes the repo-wide technical profile plus bounded Napoleon Diskaveri discovery-selection alias metadata, LEKSIKON bounded explanation metadata, RADNI PROSTOR + KRALJEVSKI RAD bounded token metadata, KRALJEVSKI DRUŠTVENI POREDAK governance, KRALJEVSKI AKT BEZBEDNOSTI bounded civil-readiness, AI identity-finance governance, KRALJEVSKI BAŠTA UNEVERZITE bounded narrative metadata, additive audio-vizuelni kontrabas package metadata, and primary/supplemental/companion audit visual metadata, then publishes only audit-safe WAWE/review/rollback governance';
+    measurableOutput: 'EXTRONDOL consumes the repo-wide technical profile plus KRALJEVSKI DRUŠTVENI POREDAK governance, KRALJEVSKI AKT BEZBEDNOSTI bounded civil-readiness, AI identity-finance governance, additive audio-vizuelni kontrabas package metadata, primary/supplemental/companion audit visual metadata and OSNOVE / RISPEKT protocol evidence, then publishes only audit-safe WAWE/review/rollback governance';
     acceptanceEvidence: typeof EXTRONDOL_RELEASE_AUDIT_ACCEPTANCE_EVIDENCE;
     rolloutPlan: string;
     rollbackPlan: string;
@@ -2601,7 +2617,7 @@ export interface ExtrimliExtrondolReleaseAuditSummary {
     };
   };
   developerAndCreateRepoWideReflectionGovernance: {
-    sourceOfTruth: '/api/extrimli/extrondol';
+    sourceOfTruth: '/api/extrimli/extrem';
     status: ExtrimliExtremProfilerReport['dokDikDakDukConsistencyHealth']['developerAndCreateRepoWideReflection']['readiness']['status'];
     readinessScore: number;
     deterministicFallbackRequired: boolean;
@@ -2639,7 +2655,7 @@ export interface ExtrimliExtrondolReleaseAuditSummary {
     universityPublicSummary: ExtrimliExtrondolDeveloperAndCreateRepoWideReflectionGovernance['universityPublicSummary'];
     additiveFacultyAndAgricultureTracks: ExtrimliExtrondolDeveloperAndCreateRepoWideReflectionGovernance['universityPublicSummary']['additiveFacultyAndAgricultureTracks'];
     aiIdentityFinanceGovernance: ExtrimliExtrondolDeveloperAndCreateRepoWideReflectionGovernance['aiIdentityFinanceGovernance'];
-    covecnostAuditVisualReference: ExtrimliExtremProfilerReport['dokDikDakDukConsistencyHealth']['developerAndCreateRepoWideReflection']['covecnostAuditVisualReference'];
+    covecnostAuditVisualReference: Omit<ExtrimliExtremProfilerReport['dokDikDakDukConsistencyHealth']['developerAndCreateRepoWideReflection']['covecnostAuditVisualReference'], 'visualSemantics' | 'technicalReadinessBinding'>;
     implementationPackage: ExtrimliExtrondolDeveloperAndCreateRepoWideReflectionGovernance['implementationPackage'];
     roadmapExecution: ExtrimliExtrondolDeveloperAndCreateRepoWideReflectionGovernance['roadmapExecution'];
     covecnostAuditVisualGovernance: ExtrimliExtrondolDeveloperAndCreateRepoWideReflectionGovernance['covecnostAuditVisualGovernance'];
@@ -2926,7 +2942,7 @@ export interface ExtrimliExtrondolDeveloperAndCreateRepoWideReflection
   extends Omit<ExtrimliExtrondolDeveloperAndCreateRepoWideReflectionGovernance, 'roadmapExecution'> {
   roadmapExecution: {
     roadmapStageId: 'v5-extrondol-release-audit-and-orchestration';
-    measurableOutput: 'EXTRONDOL consumes the repo-wide technical profile plus bounded Napoleon Diskaveri discovery-selection alias metadata, KRALJEVSKI DRUŠTVENI POREDAK governance, KRALJEVSKI AKT BEZBEDNOSTI bounded civil-readiness, AI identity-finance governance, KRALJEVSKI BAŠTA UNEVERZITE bounded narrative metadata, additive audio-vizuelni kontrabas package metadata, and primary/supplemental/companion audit visual metadata, then publishes only audit-safe WAWE/review/rollback governance';
+    measurableOutput: 'EXTRONDOL consumes the repo-wide technical profile plus bounded Napoleon Diskaveri discovery-selection alias metadata, RADNI PROSTOR bounded token-lock metadata, KRALJEVSKI DRUŠTVENI POREDAK governance, KRALJEVSKI AKT BEZBEDNOSTI bounded civil-readiness, AI identity-finance governance, KRALJEVSKI BAŠTA UNEVERZITE bounded narrative metadata, additive audio-vizuelni kontrabas package metadata, and primary/supplemental/companion audit visual metadata, then publishes only audit-safe WAWE/review/rollback governance';
     acceptanceEvidence: typeof EXTRONDOL_GOVERNANCE_ACCEPTANCE_EVIDENCE;
     rolloutPlan: string;
     rollbackPlan: string;
@@ -3081,10 +3097,10 @@ export interface ExtrimliExtrondolStartProject {
   };
   mandatoryOutputs: readonly [
     'versionRoadmap',
+    'versionRoadmap.developerCreateLock',
     'rollout.currentWawe',
     'rollout.eligibleNextWawe',
     'rollout.promotionFreeze',
-    'dokerKuratIzekDokarTrack',
     'spajaproTrack',
     'nivoDuet',
     'dinkos',
@@ -3093,6 +3109,7 @@ export interface ExtrimliExtrondolStartProject {
     'extremProfiler',
     'extremProfiler.businessLicensingSignals',
     'extremProfiler.zelezaraPretplataIdentityTrack',
+    'extremProfiler.kraljevskiPravniUniverzitetTrack',
     'extremProfiler.funkcinalnoProgramiranjeEnergetskogMisaonogToka',
     'extremProfiler.funkcionalnoProgramiranjeUzvisenogMisanogToka',
     'extremProfiler.funkcionalnoProgramiranjeEksplicitnogMisaonogToka',
@@ -3102,35 +3119,41 @@ export interface ExtrimliExtrondolStartProject {
     'extremProfiler.programskiJezikPoProsparitetuDeklasiraneMatriceUEkstazi',
     'extremProfiler.programskiJezikParadigmaOblikovanjeTela',
     'extremProfiler.programskiJezikDekoracijeObjektnihPrimesa',
-    'extremProfiler.programskiJezikSpecijalizovanZaIgrice',
+    'extremProfiler.paradijogonalnoProgrimiranje',
+    'extremProfiler.funkionalnoProgramiranjePravnogMisaonogToka',
     'extremProfiler.metrikoProgramiranje',
     'extremProfiler.proporcionalnoProgramiranje',
     'extremProfiler.spajinoProporcionalnoProgramiranjeUniverzitet',
-    'extremProfiler.sinemetrickoProgramiranje',
+    'extremProfiler.vrhProgramskogEkviladenta',
     'extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection',
+    'extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.dailyOperationalCadence',
     'extremProfiler.dokDikDakDukConsistencyHealth.programskiJezikProucavanja',
+    'extremProfiler.sinemetrickoProgramiranje',
     'extremProfiler.objektnoOrijentisanaProngilacija',
     'extremProfiler.objektnoOrijentisanaReprodukcija',
     'extremProfiler.objektnoOrijentusanoUzdizanjeEpskihElikvadenata',
     'extremProfiler.resolutionReadiness',
     'extremProfiler.semaMuSemaFormula',
     'b2bReadiness.globalLicensing',
-    'b2bScope.subscriptionPackage.aiPlateEnterprisePackage',
-    'b2bReadiness.governanceDecisions.aiPlateEnterprisePackage',
+    'kraljevskiPravniUniverzitetGovernance',
     'funkcinalnoProgramiranjeEnergetskogMisaonogToka',
     'funkcionalnoProgramiranjeUzvisenogMisanogToka',
     'funkcionalnoProgramiranjeEksplicitnogMisaonogToka',
     'funkcionalnoProgramiranjePravednogMisaonogToka',
     'programskiJezikInformacionihTokova',
     'programskiJezikPretpostavka',
+    'programskiJezikPoProsparitetuDeklasiraneMatriceUEkstazi',
     'programskiJezikParadigmaOblikovanjeTela',
     'programskiJezikDekoracijeObjektnihPrimesa',
-    'programskiJezikSpecijalizovanZaIgrice',
+    'paradijogonalnoProgrimiranje',
+    'funkionalnoProgramiranjePravnogMisaonogToka',
     'metrikoProgramiranje',
     'proporcionalnoProgramiranje',
     'spajinoProporcionalnoProgramiranjeUniverzitet',
-    'sinemetrickoProgramiranje',
+    'vrhProgramskogEkviladenta',
     'developerAndCreateRepoWideReflection',
+    'extremProfiler.dokDikDakDukConsistencyHealth.programskiJezikProucavanja',
+    'sinemetrickoProgramiranje',
     'objektnoOrijentisanaProngilacija',
     'objektnoOrijentisanaReprodukcija',
     'epicElikvadenti',
@@ -3152,10 +3175,10 @@ export interface ExtrimliExtrondolStartProject {
     syncRequired: true;
     syncedContractFields: readonly [
       'versionRoadmap',
+      'versionRoadmap.developerCreateLock',
       'rollout.currentWawe',
       'rollout.eligibleNextWawe',
       'rollout.promotionFreeze',
-      'dokerKuratIzekDokarTrack',
       'spajaproTrack',
       'b2bScope',
       'b2bScope.subscriptionPackage',
@@ -3163,6 +3186,8 @@ export interface ExtrimliExtrondolStartProject {
       'b2bScope.unlimitedUseGuardrails',
       'b2bReadiness',
       'b2bReadiness.governanceDecisions.aiPlateEnterprisePackage',
+      'extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.aiIdentityFinanceGovernance',
+      'releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.aiIdentityFinanceGovernance',
       'nivoDuet',
       'dinkos',
       'distanceRatioEkvilaterTable',
@@ -3170,42 +3195,52 @@ export interface ExtrimliExtrondolStartProject {
       'extremProfiler',
       'extremProfiler.businessLicensingSignals',
       'extremProfiler.zelezaraPretplataIdentityTrack',
+      'extremProfiler.kraljevskiPravniUniverzitetTrack',
       'extremProfiler.funkcinalnoProgramiranjeEnergetskogMisaonogToka.readiness',
       'extremProfiler.funkcionalnoProgramiranjeUzvisenogMisanogToka.readiness',
       'extremProfiler.funkcionalnoProgramiranjeEksplicitnogMisaonogToka.readiness',
       'extremProfiler.funkcionalnoProgramiranjePravednogMisaonogToka.readiness',
       'extremProfiler.programskiJezikInformacionihTokova.readiness',
       'extremProfiler.programskiJezikPretpostavka.readiness',
+      'extremProfiler.programskiJezikPoProsparitetuDeklasiraneMatriceUEkstazi.readiness',
       'extremProfiler.programskiJezikParadigmaOblikovanjeTela.readiness',
       'extremProfiler.programskiJezikDekoracijeObjektnihPrimesa.readiness',
-      'extremProfiler.programskiJezikSpecijalizovanZaIgrice.readiness',
+      'extremProfiler.paradijogonalnoProgrimiranje.readiness',
+      'extremProfiler.funkionalnoProgramiranjePravnogMisaonogToka.readiness',
       'extremProfiler.metrikoProgramiranje.readiness',
       'extremProfiler.proporcionalnoProgramiranje.readiness',
       'extremProfiler.spajinoProporcionalnoProgramiranjeUniverzitet.readiness',
-      'extremProfiler.sinemetrickoProgramiranje.readiness',
       'extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection',
+      'extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.dailyOperationalCadence',
       'extremProfiler.dokDikDakDukConsistencyHealth.programskiJezikProucavanja',
+      'extremProfiler.sinemetrickoProgramiranje.readiness',
       'extremProfiler.resolutionReadiness',
       'extremProfiler.semaMuSemaFormula',
       'extremProfiler.objektnoOrijentisanaProngilacija.readiness',
       'extremProfiler.objektnoOrijentisanaReprodukcija.readiness',
       'extremProfiler.objektnoOrijentusanoUzdizanjeEpskihElikvadenata.readiness',
       'b2bReadiness.globalLicensing',
+      'releaseAuditSummary.aiPlateEnterprisePackageGovernance',
+      'spajaKod.publicSignals.aiPlateEnterprisePackageStatus',
+      'kraljevskiPravniUniverzitetGovernance',
       'funkcinalnoProgramiranjeEnergetskogMisaonogToka',
       'funkcionalnoProgramiranjeUzvisenogMisanogToka',
       'funkcionalnoProgramiranjeEksplicitnogMisaonogToka',
       'funkcionalnoProgramiranjePravednogMisaonogToka',
       'programskiJezikInformacionihTokova',
       'programskiJezikPretpostavka',
+      'programskiJezikPoProsparitetuDeklasiraneMatriceUEkstazi',
       'programskiJezikParadigmaOblikovanjeTela',
       'programskiJezikDekoracijeObjektnihPrimesa',
-      'programskiJezikSpecijalizovanZaIgrice',
+      'paradijogonalnoProgrimiranje',
+      'funkionalnoProgramiranjePravnogMisaonogToka',
       'metrikoProgramiranje',
       'proporcionalnoProgramiranje',
       'spajinoProporcionalnoProgramiranjeUniverzitet',
-      'sinemetrickoProgramiranje',
+      'vrhProgramskogEkviladenta',
       'developerAndCreateRepoWideReflection',
       'extremProfiler.dokDikDakDukConsistencyHealth.programskiJezikProucavanja',
+      'sinemetrickoProgramiranje',
       'mobilnaLinija',
       'objektnoOrijentisanaProngilacija',
       'objektnoOrijentisanaReprodukcija',
@@ -3508,6 +3543,8 @@ export interface ExtrimliSpajaKodPublicFacade {
       'publicSignals.sarkazamPrivrednaGranaDigitalizmaStatus',
       'publicSignals.notes1450Status',
       'publicSignals.functionRegistryStatus',
+      'publicSignals.spajaNikOpenEvolutionFunctionBackupStatus',
+      'publicSignals.cliFunctionBackdownInovacePaidSpajicnikolaStatus',
       'publicSignals.leksikonStatus',
       'publicSignals.promocijeTiketiBonusiPropusniceAdministrativniBonusiStatus',
       'publicSignals.kraljevskoTakmicenjeStatus',
@@ -3557,7 +3594,6 @@ export interface ExtrimliSpajaKodPublicFacade {
       'developerAndCreateImplementationPackage.sarkazamPrivrednaGranaDigitalizmaSummary',
       'developerAndCreateImplementationPackage.notes1450Summary',
       'developerAndCreateImplementationPackage.functionRegistrySummary',
-      'developerAndCreateImplementationPackage.saradnjaReadySummary',
       'developerAndCreateImplementationPackage.leksikonSummary',
       'developerAndCreateImplementationPackage.promocijeTiketiBonusiPropusniceAdministrativniBonusiSummary',
       'developerAndCreateImplementationPackage.kraljevskoTakmicenjeSummary',
@@ -3861,7 +3897,7 @@ export interface ExtrimliSpajaKodPublicFacade {
       tokenOrderStatus: 'READY' | 'WATCH' | 'BLOCKED';
       duplicateRuleStatus: 'READY' | 'WATCH' | 'BLOCKED';
       fallbackInputStatus: 'READY' | 'WATCH' | 'BLOCKED';
-      randomSelectionScopeStatement: typeof DEVELOPER_CREATE_RANDOM_SELECTION_SCOPE_STATEMENT;
+      randomSelectionScopeStatement: typeof DEVELOPER_CREATE_ALATI_RADIONICA_RANDOM_SELECTION_SCOPE_STATEMENT;
       governancePosture: {
         sequenceOrderRule: 'strict-order-required';
         duplicateRule: 'đukar-and-đukar-2-are-distinct-singletons';
@@ -3986,8 +4022,8 @@ export interface ExtrimliSpajaKodPublicFacade {
       downstreamReference: 'docs/MULTI-REPO-LINKS.md -> spaja86/IO-OPENUI-AO (summary-only)';
       publicBoundary: 'audit-safe-summary-only';
       leadershipTransitionSummary: string;
-      effectiveDate: string;
-      auditTrailReference: string;
+      effectiveDate: ExtrimliExtremProfilerReport['dokDikDakDukConsistencyHealth']['developerAndCreateRepoWideReflection']['vinogradiGrockaRestoranTrack']['effectiveDate'];
+      auditTrailReference: ExtrimliExtremProfilerReport['dokDikDakDukConsistencyHealth']['developerAndCreateRepoWideReflection']['vinogradiGrockaRestoranTrack']['auditTrailReference'];
     };
     poslovnaPonudaZelezaraDooSummary: {
       canonicalAlias: ExtrimliExtremProfilerReport['dokDikDakDukConsistencyHealth']['developerAndCreateRepoWideReflection']['poslovnaPonudaZelezaraDooTrack']['canonicalAlias'];
@@ -4133,7 +4169,7 @@ export interface ExtrimliSpajaKodPublicFacade {
       humanReviewPosture: 'ALIGNED' | 'WATCH' | 'REVIEW_REQUIRED';
       downstreamReference: 'docs/MULTI-REPO-LINKS.md -> spaja86/IO-OPENUI-AO (summary-only)';
       publicBoundary: 'audit-safe-summary-only';
-      randomSelectionScopeStatement: typeof DEVELOPER_CREATE_ALATI_RADIONICA_RANDOM_SELECTION_SCOPE_STATEMENT;
+      randomSelectionScopeStatement: typeof DEVELOPER_CREATE_RANDOM_SELECTION_SCOPE_STATEMENT;
       randomSelectionPosture: {
         requestAlias: 'RANDOM selekcija svega';
         selectionChannel: 'napoleon-diskaveri-bounded-selection';

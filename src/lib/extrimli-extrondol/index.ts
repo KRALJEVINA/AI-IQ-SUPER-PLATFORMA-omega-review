@@ -104,6 +104,8 @@ import type {
   ExtrimliExtrondolObjektnaProngilacijaGovernance,
   ExtrimliExtrondolReport,
   ExtrimliExtrondolReleaseAuditSummary,
+  ExtrimliExtrondolB2bReadiness,
+  ExtrimliExtrondolDeveloperAndCreateRepoWideReflectionGovernance,
   ExtrimliExtrondolSinemetrickoProgramiranjeGovernance,
   ExtrimliExtrondolStartProject,
   ExtrimliSpajaKodPublicFacade,
@@ -244,7 +246,7 @@ const AUDIO_VISUAL_KONTRABAS_ROLLOUT_PLAN =
 const AUDIO_VISUAL_KONTRABAS_ROLLBACK_PLAN =
   'Freeze promotion and fall back to the prior Developer/Create reflection package if audio-vizuelni readiness, review evidence, or downstream summary alignment drifts.';
 const AUDIO_VISUAL_KONTRABAS_DOWNSTREAM_REFERENCE =
-  'docs/MULTI-REPO-LINKS.md -> spaja86/IO-OPENUI-AO (summary-only)';
+  'docs/MULTI-REPO-LINKS.md -> spaja86/IO-OPENUI-AO (summary-only)' as const;
 const DEVELOPER_CREATE_BRANCH_REPORT_TEMPLATE_SOURCE =
   'docs/EXTRIMLI-DEVELOPER-CREATE-PROGRAM.md#14-implementacija-plana-audit-snapshot-2026-09-25' as const;
 
@@ -482,10 +484,10 @@ function buildAudioVisualKontrabasGovernancePackage(
     reviewPosture:
       promotionFreeze
       || audioVisualKontrabasPackage.readinessStatus === 'BLOCKED'
-        ? 'REVIEW_REQUIRED'
+        ? 'REVIEW_REQUIRED' as const
         : audioVisualKontrabasPackage.readinessStatus === 'WATCH'
-          ? 'WATCH'
-          : 'ALIGNED',
+          ? 'WATCH' as const
+          : 'ALIGNED' as const,
     rolloutPlan: AUDIO_VISUAL_KONTRABAS_ROLLOUT_PLAN,
     rollbackPlan: AUDIO_VISUAL_KONTRABAS_ROLLBACK_PLAN,
     acceptanceEvidence: AUDIO_VISUAL_KONTRABAS_ACCEPTANCE_EVIDENCE,
@@ -722,7 +724,7 @@ function mapDeveloperCreateCovecnostAuditVisualReference(
         }),
       ),
     })),
-    flowLock: { ...reflection.flowLock, sequence: [...reflection.flowLock.sequence] },
+    flowLock: { ...reflection.flowLock, sequence: [...reflection.flowLock.sequence] as const },
     packageOutputs: { ...reflection.packageOutputs },
     companionAuditVisualReferences: reflection.companionAuditVisualReferences.map((reference) => ({
       ...reference,
@@ -2623,7 +2625,7 @@ function buildProgramskiJezikSpecijalizovanZaIgriceGovernance(params: {
       dakPromotionDecision: promotionHold ? 'HOLD' : 'PROMOTE',
       dukHumanReviewDecision: 'REQUIRED',
     },
-    consumerAnchors: signal.consumerAnchors,
+    consumerAnchors: { ...signal.consumerAnchors, publicOutput: 'audit-safe-summary' },
     waweImpact: {
       currentWawe: params.currentWawe,
       eligibleNextWawe: params.eligibleNextWawe,
@@ -2933,7 +2935,10 @@ function buildVrhProgramskogEkviladentaGovernance(params: {
       ekspozje: 'auditabilni-intenzitet-opterecenja',
       obrtniMoment: 'momentum-torque-signal',
     },
-    documentationOnlyReferences: signal.meaningLock.chatGptShareReferences.map((reference) => ({ ...reference })),
+    documentationOnlyReferences: [
+      { ...signal.meaningLock.chatGptShareReferences[0] },
+      { ...signal.meaningLock.chatGptShareReferences[1] },
+    ],
     ownershipEvidence: {
       forTechnical: true,
       dokTechnical: true,
@@ -3297,7 +3302,7 @@ function buildDeveloperCreateUniversityGovernanceProfile(params: {
     ...(!params.rollbackPlanComplete ? ['rollback-plan-required'] : []),
   ];
   const freezeRequired =
-    zadrugaBlockerReasons.length > 0 || antiAbuseStatus === 'BLOCKED' || disputeStatus === 'BLOCKED';
+    zadrugaBlockerReasons.length > 0 || antiAbuseStatus === 'BLOCKED';
   const promotionEligible = !freezeRequired && params.downstreamSyncComplete;
   const reviewPosture =
     freezeRequired || payoutReadinessStatus === 'BLOCKED'
@@ -3407,7 +3412,7 @@ function buildSpajaKodFacade(params: {
   functionRegistryStatus: ExtrimliExtrondolReport['extremProfiler']['dokDikDakDukConsistencyHealth']['developerAndCreateRepoWideReflection']['functionRegistryTrack']['readiness']['status'];
   spajaNikOpenEvolutionFunctionBackupStatus: ExtrimliExtrondolReport['extremProfiler']['dokDikDakDukConsistencyHealth']['developerAndCreateRepoWideReflection']['functionRegistryTrack']['spajaNikOpenEvolutionFunctionBackup']['status'];
   cliFunctionBackdownInovacePaidSpajicnikolaStatus: ExtrimliExtrondolReport['extremProfiler']['dokDikDakDukConsistencyHealth']['developerAndCreateRepoWideReflection']['functionRegistryTrack']['cliFunctionBackdownInovacePaidSpajicnikola']['status'];
-  cliFunctionBackdownInovacePaidSpajicnikolaPaymentGateStatus: ExtrimliExtrondolReport['releaseAuditSummary']['developerAndCreateRepoWideReflectionGovernance']['functionRegistryTrack']['cliFunctionBackdownInovacePaidSpajicnikola']['paymentGateStatus'];
+  cliFunctionBackdownInovacePaidSpajicnikolaPaymentGateStatus: 'PAID_CONFIRMED' | 'PAID_REQUIRED';
   saradnjaReadyStatus: ExtrimliExtrondolReport['extremProfiler']['dokDikDakDukConsistencyHealth']['developerAndCreateRepoWideReflection']['saradnjaReadyPackage']['readinessSignal']['status'];
   leksikonStatus: ExtrimliExtrondolReport['extremProfiler']['dokDikDakDukConsistencyHealth']['developerAndCreateRepoWideReflection']['leksikonTrack']['readinessSignal']['status'];
   promocijeTiketiBonusiPropusniceAdministrativniBonusiStatus: ExtrimliExtrondolReport['extremProfiler']['dokDikDakDukConsistencyHealth']['developerAndCreateRepoWideReflection']['promocijeTiketiBonusiPropusniceAdministrativniBonusiTrack']['readinessSignal']['status'];
@@ -4297,6 +4302,7 @@ function buildSpajaKodFacade(params: {
         montezacijaSummary:
           params.extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.montezacijaTrack.montezacijaSummary,
         montezacijaNadMontezacijamaApprovalPackage: {
+          ...params.extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.montezacijaTrack.montezacijaNadMontezacijamaApprovalPackage,
           canonicalAlias:
             params.extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.montezacijaTrack.montezacijaNadMontezacijamaApprovalPackage.canonicalAlias,
           status:
@@ -4310,6 +4316,7 @@ function buildSpajaKodFacade(params: {
             params.extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.montezacijaTrack.downstreamReference,
         },
         kraljevskaMontezacijaApprovalPackage: {
+          ...params.extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.montezacijaTrack.kraljevskaMontezacijaApprovalPackage,
           canonicalAlias:
             params.extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.montezacijaTrack.kraljevskaMontezacijaApprovalPackage.canonicalAlias,
           status:
@@ -4457,6 +4464,8 @@ function buildSpajaKodFacade(params: {
         publicBoundary: 'audit-safe-summary-only',
         constructionDesignSummary:
           params.extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.konstrukcijeIProjektovanjeTrack.constructionDesignSummary,
+        nalazSummary:
+          params.extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.konstrukcijeIProjektovanjeTrack.nalazSummary,
         gradjevinskiFakultetStatus:
           params.extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.konstrukcijeIProjektovanjeTrack.readinessSignal.gradjevinskiFakultetStatus,
         gradjevinskiAktStatus:
@@ -4625,7 +4634,7 @@ function buildSpajaKodFacade(params: {
           reviewPosture:
             params.extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.radioTrack.mikrofonProjectionAlias.reviewPosture,
           downstreamReference:
-            params.extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.radioTrack.mikrofonProjectionAlias.downstreamReference,
+            params.extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.radioTrack.downstreamReference,
           publicBoundary: 'audit-safe-summary-only',
           semanticPreservation: {
             ...params.extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.radioTrack.mikrofonProjectionAlias.semanticPreservation,
@@ -5478,7 +5487,7 @@ export function getExtrimliExtrondolReport(evidence?: ExtrimliExtrondolGovernanc
   const operationalApproval = currentWawe !== 'WAWE-1' && currentWawe !== 'WAWE-2';
   const rollbackPlanComplete = Boolean(governanceEvidence.rollbackPlanComplete);
   const humanReviewComplete = Boolean(governanceEvidence.humanReviewComplete);
-  const rolloutRing = currentWawe === 'WAWE-1'
+  const rolloutRing: typeof EXTRONDOL_ROLLOUT_RING_SEQUENCE[number] = currentWawe === 'WAWE-1'
     ? 'RING-0-CONTRACT'
     : currentWawe === 'WAWE-2'
       ? 'RING-1-STAGING'
@@ -6024,19 +6033,6 @@ export function getExtrimliExtrondolReport(evidence?: ExtrimliExtrondolGovernanc
         inspektori: mapInspektoriGovernance(
           extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.inspektori,
         ),
-        kraljevskiDrustveniPoredak: {
-          ...extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.kraljevskiDrustveniPoredak,
-          sourceOfTruth: '/api/extrimli/extrondol',
-          technicalSignalSource: '/api/extrimli/extrem',
-          publicBoundary: '/api/extrimli/spaja-kod',
-          reviewRequiredBeforeWideRollout:
-            extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.kraljevskiDrustveniPoredak.readiness.status !== 'READY',
-          promotionFreeze,
-          humanReviewRequired: true,
-          complianceReviewRequired: true,
-          paymentVerificationRequired: true,
-          downstreamSync: 'follow-up-only-until-io-openui-ao-adopts-audit-safe-summary',
-        },
         privredniAkt:
           extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.kraljevskiEkonomskiUneverzitet.privredniAkt,
         certificationGovernance: {
@@ -6372,6 +6368,8 @@ export function getExtrimliExtrondolReport(evidence?: ExtrimliExtrondolGovernanc
       sourceOfTruth: '/api/extrimli/extrem',
       status: extremProfiler.paradijogonalnoProgrimiranje.readiness.status,
       readinessScore: extremProfiler.paradijogonalnoProgrimiranje.readiness.score,
+      dokStatus: extremProfiler.paradijogonalnoProgrimiranje.ownershipEvidence.dokEvidence.status,
+      dikStatus: extremProfiler.paradijogonalnoProgrimiranje.ownershipEvidence.dikEvidence.status,
       cloudFieldCohesionPercent: extremProfiler.paradijogonalnoProgrimiranje.profileInput.cloudFieldCohesionPercent,
       conflictDegradationPressurePercent: extremProfiler.paradijogonalnoProgrimiranje.profileInput.conflictDegradationPressurePercent,
       reviewRequiredBeforeWideRollout: extremProfiler.paradijogonalnoProgrimiranje.readiness.status !== 'READY',
@@ -7587,7 +7585,11 @@ export function getExtrimliExtrondolReport(evidence?: ExtrimliExtrondolGovernanc
     }
     return 'WATCH';
   };
-  const dokDikDakDukConsistencyHealth: ExtrimliDokDikDakDukConsistencyHealth = {
+  const dokDikDakDukConsistencyHealth: ExtrimliDokDikDakDukConsistencyHealth & {
+    developerAndCreateRepoWideReflection: Pick<ExtrimliExtrondolDeveloperAndCreateRepoWideReflectionGovernance,
+      'kraljevskiDrustveniPoredak' | 'aiIdentityFinanceGovernance'>;
+  } = {
+    ...extremProfiler.dokDikDakDukConsistencyHealth,
     sourceOfTruth: '/api/extrimli/extrondol',
     scopeLock: ['DOK', 'DIK', 'DAK', 'DUK', 'FOR'],
     ownershipBoundary: expectedOwnershipBoundary,
@@ -7702,6 +7704,7 @@ export function getExtrimliExtrondolReport(evidence?: ExtrimliExtrondolGovernanc
       },
     },
     developerAndCreateRepoWideReflection: {
+      ...extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection,
       canonicalName: 'DEVELOPER AND CREATE',
       mainManifestDocument: DEVELOPER_CREATE_VRH_MAIN_MANIFEST_DOCUMENT,
       canonicalNarrativeSentence: DEVELOPER_CREATE_VRH_CANONICAL_NARRATIVE_SENTENCE,
@@ -7782,9 +7785,12 @@ export function getExtrimliExtrondolReport(evidence?: ExtrimliExtrondolGovernanc
           promotionFreeze
           || extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.aiIdentityFinanceGovernance.technicalSignals.status !== 'READY',
       },
-      covecnostAuditVisualReference: mapDeveloperCreateCovecnostAuditVisualReference(
-        extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.covecnostAuditVisualReference,
-      ),
+      covecnostAuditVisualReference: {
+        ...extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.covecnostAuditVisualReference,
+        ...mapDeveloperCreateCovecnostAuditVisualReference(
+          extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.covecnostAuditVisualReference,
+        ),
+      },
       currentImplementationStage: extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.currentImplementationStage,
       repoWideReflection: extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.repoWideReflection,
       dailyOperationalCadence:
@@ -7921,7 +7927,7 @@ export function getExtrimliExtrondolReport(evidence?: ExtrimliExtrondolGovernanc
     ];
   }
 
-  const b2bReadiness = {
+  const b2bReadiness: ExtrimliExtrondolB2bReadiness = {
     tenant: {
       organizationId: 'spaja-digital-industrija-b2b',
       organizationName: 'Kompanija SPAJA / Digitalna Industrija',
@@ -8127,6 +8133,7 @@ export function getExtrimliExtrondolReport(evidence?: ExtrimliExtrondolGovernanc
       ],
     },
     governanceDecisions: {
+    vrhProgramskogEkviladentaGovernance: releaseAuditSummary.vrhProgramskogEkviladentaGovernance,
     onboardingHold: !onboardingComplete
       || !contractApproved
       || !duetSignal.valid
@@ -8246,6 +8253,10 @@ export function getExtrimliExtrondolReport(evidence?: ExtrimliExtrondolGovernanc
         });
 
         return {
+          reviewRequiredBeforeWideRollout: releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.reviewRequiredBeforeWideRollout,
+          blockerReasons: releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.blockerReasons,
+          watchReasons: releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.watchReasons,
+          kraljevskiDrustveniPoredak: releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.kraljevskiDrustveniPoredak,
           term: 'DEVELOPER AND CREATE',
           equalityLock: 'DEVELOPER AND CREATE == VRH PROGRAMSKOG EKVILADENTA == RADNI TAKT MOZGA (MISLILAC)',
           canonicalMapeUmaScopeLock: DEVELOPER_CREATE_VRH_MAPE_UMA_SCOPE_LOCK,
@@ -8392,8 +8403,6 @@ export function getExtrimliExtrondolReport(evidence?: ExtrimliExtrondolGovernanc
                promotionFreeze
                || extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.aiIdentityFinanceGovernance.technicalSignals.status !== 'READY',
            },
-           covecnostAuditVisualReference: mappedDeveloperCreateCovecnostAuditVisualReference,
-           repoWideReflection: extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.repoWideReflection,
           covecnostAuditVisualReference: mappedDeveloperCreateCovecnostAuditVisualReference,
           implementationPackage: {
             ...extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.implementationPackage,
@@ -8531,32 +8540,7 @@ export function getExtrimliExtrondolReport(evidence?: ExtrimliExtrondolGovernanc
             reviewRequiredBeforeWideRollout:
               extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.readiness.status !== 'READY',
           },
-          roadmapExecution: {
-            roadmapStageId: 'v5-extrondol-release-audit-and-orchestration',
-            measurableOutput:
-              'EXTRONDOL consumes the repo-wide technical profile plus KRALJEVSKI DRUŠTVENI POREDAK governance, KRALJEVSKI AKT BEZBEDNOSTI bounded civil-readiness, AI identity-finance governance, KRALJEVSKI BAŠTA UNEVERZITE bounded narrative metadata, additive audio-vizuelni kontrabas package metadata, and primary/supplemental/companion audit visual metadata, then publishes only audit-safe WAWE/review/rollback governance',
-            acceptanceEvidence: EXTRONDOL_GOVERNANCE_ACCEPTANCE_EVIDENCE,
-            downstreamSync: 'follow-up-only-until-io-openui-ao-adopts-audit-safe-summary',
-            v700Extension: {
-              roadmapStageId: DEVELOPER_CREATE_V700_ROADMAP_STAGE_ID,
-              scopeStatement: DEVELOPER_CREATE_V700_SCOPE_STATEMENT,
-              additiveOnly: true,
-              noNewRuntimeRoutes: true,
-              noParallelSourceOfTruth: true,
-              acceptanceCriteria: [
-                'v700-extension-is-governance-only',
-                'rollout-and-rollback-are-defined',
-                'human-review-required-before-promotion',
-                'downstream-summary-sync-only',
-              ],
-              rolloutPlan:
-                'Introduce V700 as additive governance metadata over the active v5 execution lock, validate release-audit evidence, then promote only after human review.',
-              rollbackPlan:
-                'Freeze V700 governance extension and revert to prior v5-only governance metadata until docs/types/routes/tests/workflows are re-aligned.',
-              humanReviewStatus: 'required-before-promotion',
-              downstreamReference: 'docs/MULTI-REPO-LINKS.md -> spaja86/IO-OPENUI-AO (summary-only)',
-            },
-          },
+          roadmapExecution: releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.roadmapExecution,
           waweImpact: {
             currentWawe,
             eligibleNextWawe: nextWawe(currentWawe),
@@ -8573,16 +8557,7 @@ export function getExtrimliExtrondolReport(evidence?: ExtrimliExtrondolGovernanc
           reasons: [...extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.readiness.reasons],
         };
       })(),
-      paradijogonalnoProgrimiranjeGovernance: {
-        sourceOfTruth: '/api/extrimli/extrem',
-        status: extremProfiler.paradijogonalnoProgrimiranje.readiness.status,
-        readinessScore: extremProfiler.paradijogonalnoProgrimiranje.readiness.score,
-        cloudFieldCohesionPercent: extremProfiler.paradijogonalnoProgrimiranje.profileInput.cloudFieldCohesionPercent,
-        conflictDegradationPressurePercent: extremProfiler.paradijogonalnoProgrimiranje.profileInput.conflictDegradationPressurePercent,
-        reviewRequiredBeforeWideRollout: extremProfiler.paradijogonalnoProgrimiranje.readiness.status !== 'READY',
-        blockerReasons: [...extremProfiler.paradijogonalnoProgrimiranje.readiness.blockerReasons],
-        watchReasons: [...extremProfiler.paradijogonalnoProgrimiranje.readiness.watchReasons],
-      },
+      paradijogonalnoProgrimiranjeGovernance: releaseAuditSummary.paradijogonalnoProgrimiranjeGovernance,
       objektnoOrijentisanaReprodukcijaGovernance: {
         sourceOfTruth: '/api/extrimli/extrem',
         status: extremProfiler.objektnoOrijentisanaReprodukcija.readiness.status,
@@ -8619,7 +8594,7 @@ export function getExtrimliExtrondolReport(evidence?: ExtrimliExtrondolGovernanc
       criticalGlobalGapCount: extremProfiler.businessLicensingSignals.criticalGlobalGapCount,
       freezeRequired: extremProfiler.businessLicensingSignals.freezeRequired,
     },
-  } as const;
+  };
 
   const acceptanceCriteria: ExtrimliExtrondolAcceptanceCriterion[] = [
     {
@@ -9257,6 +9232,18 @@ export function getExtrimliExtrondolReport(evidence?: ExtrimliExtrondolGovernanc
     funkcionalnoProgramiranjePravednogMisaonogToka,
     radniTaktMozgaMislilac,
     developerAndCreateRepoWideReflection: {
+      mainManifestDocument: DEVELOPER_CREATE_VRH_MAIN_MANIFEST_DOCUMENT,
+      canonicalNarrativeSentence: DEVELOPER_CREATE_VRH_CANONICAL_NARRATIVE_SENTENCE,
+      interpretationAliases: DEVELOPER_CREATE_VRH_INTERPRETATION_ALIASES,
+      fourPermanentLayers: DEVELOPER_CREATE_VRH_FOUR_PERMANENT_LAYERS,
+      canonicalTokenVocabulary: DEVELOPER_CREATE_VRH_CANONICAL_TOKEN_VOCABULARY,
+      narrativeContractBoundary: DEVELOPER_CREATE_VRH_NARRATIVE_CONTRACT_BOUNDARY,
+      visualEvidencePolicy: DEVELOPER_CREATE_VRH_VISUAL_EVIDENCE_POLICY,
+      downstreamSummaryPolicy: DEVELOPER_CREATE_VRH_DOWNSTREAM_SUMMARY_POLICY,
+      successfulNarrativeCriteria: DEVELOPER_CREATE_VRH_SUCCESSFUL_NARRATIVE_CRITERIA,
+      canonicalGovernanceVocabulary: extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.canonicalGovernanceVocabulary,
+      osnoveRispektProtocol: extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.osnoveRispektProtocol,
+      covecnostAuditVisualGovernance: releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.covecnostAuditVisualGovernance,
       term: 'DEVELOPER AND CREATE',
       canonicalScopeLock: extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.canonicalScopeLock,
       equalityLock: 'DEVELOPER AND CREATE == VRH PROGRAMSKOG EKVILADENTA == RADNI TAKT MOZGA (MISLILAC)',
@@ -10013,6 +10000,7 @@ export function getExtrimliExtrondolReport(evidence?: ExtrimliExtrondolGovernanc
           'Freeze promotion and revert to the previously verified Developer/Create package if MONTEZACIJA readiness, review posture, or downstream summary alignment drifts.',
         humanReviewStatus: 'required-before-promotion',
         montezacijaNadMontezacijamaApprovalPackage: {
+          ...extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.montezacijaTrack.montezacijaNadMontezacijamaApprovalPackage,
           canonicalAlias:
             extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.montezacijaTrack.montezacijaNadMontezacijamaApprovalPackage.canonicalAlias,
           status:
@@ -10026,6 +10014,7 @@ export function getExtrimliExtrondolReport(evidence?: ExtrimliExtrondolGovernanc
             extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.montezacijaTrack.downstreamReference,
         },
         kraljevskaMontezacijaApprovalPackage: {
+          ...extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.montezacijaTrack.kraljevskaMontezacijaApprovalPackage,
           canonicalAlias:
             extremProfiler.dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.montezacijaTrack.kraljevskaMontezacijaApprovalPackage.canonicalAlias,
           status:
