@@ -8,6 +8,9 @@ export const metadata: Metadata = {
 };
 
 const CHEAT_SHEET = [
+  'AKTIVIRAJ: jezgro',
+  'IZGRADI: ime (ctx.programi)',
+  'POKRENI: ime',
   'MOŽE: dozvola',
   'ŽELIM: namera',
   'DO: komanda ili ECHO tekst',
