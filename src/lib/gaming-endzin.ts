@@ -18,7 +18,7 @@ import { MASTER_POKER_GAME_ID } from './poker/types';
 
 // ─── Runner tipovi ─────────────────────────────────────────────────
 
-export type RunnerTip = 'akcija' | 'logicka' | 'simulacija' | 'edu' | 'kreativna' | 'borbena' | 'poker' | 'eglan' | 'makin' | 'reakt';
+export type RunnerTip = 'akcija' | 'logicka' | 'simulacija' | 'edu' | 'kreativna' | 'borbena' | 'poker' | 'eglan' | 'makin' | 'reakt' | 'transformers';
 export type RunnerResolver = (igrica: Igrica) => RunnerTip | null;
 export type RunnerKompatibilnostStatus = 'existing-runner' | 'requires-new-runner';
 
@@ -145,7 +145,7 @@ const KATEGORIJA_NA_RUNNER: Record<KategorijaIgrice, RunnerTip> = {
   reakt: 'reakt',
 };
 
-const PODRZANI_RUNNERI = new Set<RunnerTip>(['akcija', 'logicka', 'simulacija', 'edu', 'kreativna', 'borbena', 'poker', 'eglan', 'reakt']);
+const PODRZANI_RUNNERI = new Set<RunnerTip>(['akcija', 'logicka', 'simulacija', 'edu', 'kreativna', 'borbena', 'poker', 'eglan', 'reakt', 'transformers']);
 
 const customRunnerPoIgrici = new Map<string, RunnerTip>();
 const customRunnerResolvers = new Set<RunnerResolver>();
@@ -168,6 +168,7 @@ export function getRunnerTipZaIgricu(igrica: Igrica): RunnerTip {
   if (igrica.id === MASTER_POKER_GAME_ID) return 'poker';
   if (igrica.id === 'igrica-ekstreminacija-eglana') return 'eglan';
   if (igrica.id === 'igrica-makin') return 'makin';
+  if (igrica.id === 'igrica-transformers-1350') return 'transformers';
   return getRunnerTip(igrica.kategorija);
 }
 
