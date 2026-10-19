@@ -7,6 +7,7 @@ import { platforme } from '@/lib/platforme';
 import { getGlavniEndzinStatistika } from '@/lib/glavni-endzin-digitalne-industrije';
 import { igrice, getSveKategorijeIgrica } from '@/lib/igrice';
 import { IOOPENUIAO_URL } from '@/lib/io-openui-ao-gaming-platforma';
+import { buildGameLaunchHref } from '@/lib/gaming-launch';
 import { buildDigitalnaIndustrijaPregled } from '@/lib/digitalna-industrija-domen';
 
 const stats = getStatistike();
@@ -400,7 +401,7 @@ export const industrijaSekvence: Sekvenca[] = [
         naslov: `${i.ikona} ${i.naziv}`,
         opis: i.opis.length > 120 ? i.opis.slice(0, 120) + '...' : i.opis,
         ikona: i.ikona,
-        href: `/spaja-digitalni-brouvzer?url=${encodeURIComponent(i.link ?? IOOPENUIAO_URL)}&igra=${encodeURIComponent(i.naziv)}`,
+        href: buildGameLaunchHref(i, IOOPENUIAO_URL),
         oznake: [i.kategorija, i.status, `D: ${i.podrazumevanaDimenzija}`, '🌐 Brouvzer'],
       })),
     },
