@@ -34,6 +34,15 @@ The separate cloud browser could not reach `http://localhost:3100/transformers`
 and reported `net::ERR_CONNECTION_REFUSED`.
 These are verification-environment failures, not reproduced game defects.
 
+Follow-up on 19 October: Google Chrome stable was successfully downloaded from
+the official `dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb`
+source and extracted outside the repository. `chrome --version` reports
+`Google Chrome 155.0.8059.84`. Playwright launch still fails before opening a page:
+`FATAL:chrome/browser/process_singleton_posix.cc:297 ... socket() failed:
+Operation not permitted (1)`. The remaining blocker is the execution environment's
+socket restriction, rather than a missing browser binary. No network isolation or
+OS security restriction was changed to bypass this failure.
+
 | Behavior | Automated evidence | Browser status |
 | --- | --- | --- |
 | Direct route and both catalogs | HTTP/SSR and launch-builder checks pass | Hydration/click-through unconfirmed |
@@ -53,6 +62,29 @@ Start `npm run dev -- --webpack --hostname 127.0.0.1 --port 3000`, then run
 Optional `TRANSFORMERS_DEV_URL` must be a loopback URL; no production target is accepted.
 This script deliberately reports HTTP/SSR results only.
 
+## Prepared browser acceptance suite — NOT EXECUTED
+
+`scripts/transformers-browser-qa.mjs` prepares seven browser scenarios: keyboard
+transformation/movement/release/pause/cameras/orbit; obstacle movement blocking;
+attack/win/final result/reset; idle loss; actual click-through from each of the two
+catalogs including the dimension picker; mobile touch hold/release and transform.
+It uses Playwright's controlled clock and rendered DOM, not direct reducer mutation.
+The mobile scenario sends Chromium touch input; it is not a physical-device test.
+
+Only JavaScript syntax/static checks are possible here. These seven scenarios have
+NOT passed and must not be counted among the 17 passing engine/navigation tests.
+Their assertions and selectors need validation in a working browser environment.
+Timeout draw, shot obstruction, multi-touch, cancellation and focus changes still
+require additional browser acceptance work beyond this prepared suite.
+
+In a development checkout, install optional test tooling without changing tracked
+dependencies: `npm install --no-save --package-lock=false playwright`, then
+`npx playwright install chromium`. Start the local dev server and run
+`node --test scripts/transformers-browser-qa.mjs` in the same network environment.
+`TRANSFORMERS_DEV_URL` optionally selects another loopback dev URL;
+`TRANSFORMERS_CHROME_PATH` optionally selects an already installed Chrome executable.
+No CI, production target or runtime dependency is introduced by this suite.
+
 ## Remaining acceptance work
 
 Use a development environment with an installed browser and network access to its local
@@ -65,4 +97,4 @@ defect. Do not declare browser acceptance complete from the passing engine tests
 
 No gameplay fix is proposed because no game defect was reproduced. No production
 deployment, merge, dependency, CI, infrastructure or linked-repository change is included.
-Human review is required. Rollback: remove this report and smoke script. OKRID: N/A.
+Human review is required. Rollback: remove this report and both QA scripts. OKRID: N/A.
