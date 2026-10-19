@@ -13,6 +13,7 @@ import {
 import { spajaGeneratorEngine } from '@/lib/spaja-generator-engine';
 import { igrice, getSveKategorijeIgrica } from '@/lib/igrice';
 import { IOOPENUIAO_URL } from '@/lib/io-openui-ao-gaming-platforma';
+import { buildGameLaunchHref } from '@/lib/gaming-launch';
 import { digitalniKompjuteriSistem, spajaKonzole, spajaDzojstici, getSveKomponente, KOMPJUTER_GPU_JEZGRA, KOMPJUTER_RAM_GB } from '@/lib/spaja-digitalni-kompjuter';
 
 const statistika = getBrouvzerStatistika();
@@ -337,7 +338,7 @@ export const spajaDigitalniBrouvzerSekvence: Sekvenca[] = [
         naslov: `${i.ikona} ${i.naziv}`,
         opis: i.opis.length > 120 ? i.opis.slice(0, 120) + '...' : i.opis,
         ikona: i.ikona,
-        href: `/spaja-digitalni-brouvzer?url=${encodeURIComponent(i.link ?? IOOPENUIAO_URL)}&igra=${encodeURIComponent(i.naziv)}`,
+        href: buildGameLaunchHref(i, IOOPENUIAO_URL),
         oznake: [i.kategorija, i.status, `D: ${i.podrazumevanaDimenzija}`, '▶ Igraj'],
       })),
     },
