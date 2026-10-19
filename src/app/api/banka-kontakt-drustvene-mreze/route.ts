@@ -28,6 +28,12 @@ export async function GET() {
       { naziv: 'TikTok', url: 'https://www.tiktok.com/@spaja.1986', korisnickoIme: '@spaja.1986' },
       { naziv: 'YouTube', url: 'https://www.youtube.com/@spajanikopenevolution', korisnickoIme: 'SpajaNikopEvolution' },
     ],
+    integracijaDrustvenihMreza: {
+      panel: '/social-connections',
+      statusEndpoint: '/api/social-connections',
+      javneAdresePotvrdjujuAutorizaciju: false,
+      isplataPodrzana: false,
+    },
     partneri: [
       { naziv: 'ERSTE Banka DOO Smederevo', tip: 'bankarski', opis: 'Zvanicni bankarski partner' },
       { naziv: 'Kompanija SPAJA', tip: 'maticna', opis: 'Maticna kompanija digitalnog ekosistema' },
