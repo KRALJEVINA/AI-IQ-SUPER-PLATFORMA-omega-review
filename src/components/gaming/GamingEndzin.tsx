@@ -32,6 +32,7 @@ const PokerRunner = dynamic(() => import('./runners/PokerRunner'), { ssr: false 
 const EglanRunner = dynamic(() => import('./runners/EglanRunner'), { ssr: false });
 const MakinRunner = dynamic(() => import('./runners/MakinRunner'), { ssr: false });
 const ReaktRunner = dynamic(() => import('./runners/ReaktRunner'), { ssr: false });
+const TransformersRunner = dynamic(() => import('./runners/TransformersRunner'), { ssr: false });
 
 // ─── COLD AND FIRE karakteri ─────────────────────────────────────────
 
@@ -179,6 +180,7 @@ export default function GamingEndzin({ igrica, dimenzija, onPromeniDimenziju, on
   // ── Keyboard shortcuts ──
 
   useEffect(() => {
+    if (igrica.id === 'igrica-transformers-1350') return;
     function onKey(e: KeyboardEvent) {
       if (e.key === 'Escape' || e.key === 'p' || e.key === 'P') {
         if (faza === 'igra') setFaza('pauza');
@@ -187,7 +189,7 @@ export default function GamingEndzin({ igrica, dimenzija, onPromeniDimenziju, on
     }
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [faza]);
+  }, [faza, igrica.id]);
 
   const handlePokreni = useCallback(() => {
     setScore(noviScore(dimenzija.nivo));
@@ -219,6 +221,11 @@ export default function GamingEndzin({ igrica, dimenzija, onPromeniDimenziju, on
   }, []);
 
   // ── Ekran za izbor karaktera (samo COLD AND FIRE) ──
+
+  // This local prototype owns its pause, result and reset states; generic arcade HUD does not apply.
+  if (efektivniRunnerTip === 'transformers') {
+    return <TransformersRunner key={`${igrica.id}-${dimenzija.nivo}`} onIzlaz={onIzlaz} />;
+  }
 
   if (faza === 'karakter' && isColdAndFire) {
     return (

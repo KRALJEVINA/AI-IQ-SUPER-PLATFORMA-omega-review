@@ -42,6 +42,7 @@ Potvrđeno 19. oktobra 2026:
 - Serversko renderovanje potvrđuje početni ekran, SVG i 23 opcije kamera, od kojih je 20 onemogućeno.
 - `tsc --noEmit` prijavljuje 274 dijagnostike i u ovom predlogu i na čistoj osnovnoj reviziji. Normalizovani skup dijagnostika je identičan; nema novih TypeScript dijagnostika. Provera cele aplikacije ipak NE prolazi.
 - Automatska provera interakcija u pregledaču nije potvrđena: Chromium nije instaliran, a preuzimanje browser paketa nije uspelo. Serversko renderovanje nije dokaz funkcionalnih interakcija u browseru.
+- `npm run build`: Next.js produkciona kompilacija uspela za 24,8 s, zatim prekid u TypeScript fazi sa `fatal library error, lookup self`. Potpun build nije potvrđen.
 
 ## Cross-repo impact
 
