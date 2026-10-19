@@ -5535,6 +5535,7 @@ export interface ExtrimliDokDikDakDukConsistencyHealth {
         adoptionMode: 'follow-up-only-until-downstream-adopts-summary';
         syncedFields: readonly [
           'developerAndCreateRepoWideReflection.aiPlateOffer.packageOutputs',
+          'developerAndCreateRepoWideReflection.aiIdentityFinanceGovernance.packageOutputs',
           'releaseAuditSummary.developerAndCreateRepoWideReflectionGovernance.aiPlateGovernance',
           'spajaKod.publicSignals.aiPlateStatus'
         ];
@@ -5548,22 +5549,23 @@ export interface ExtrimliDokDikDakDukConsistencyHealth {
     aiIdentityFinanceGovernance: AiIdentityFinanceGovernancePackage;
     currentImplementationStage: {
       roadmapStageId: 'v5-extrondol-release-audit-and-orchestration';
-      measurableOutput: 'audit-safe repo-wide reflection status plus AI identity-finance governance, INSPEKTORI justice-path summary, RADNI PROSTOR + KRALJEVSKI RAD bounded token metadata, primary ČOVEČNOST, supplemental ČOVEČANSTVO, KRALJEVSKI BAŠTA UNEVERZITE bounded narrative metadata, additive audio-vizuelni kontrabas package metadata, companion ČOVEČANSTVO / OSEĆAJ OSEBENOSTI visual metadata, and OSNOVE / RISPEKT protocol evidence are published only through existing EXTRIMLI/EXTREM/EXTRONDOL/SPAJA KOD surfaces';
+      measurableOutput: 'audit-safe repo-wide reflection status plus AI identity-finance governance, INSPEKTORI justice-path summary, LEKSIKON bounded explanation metadata, RADNI PROSTOR + KRALJEVSKI RAD bounded token metadata, primary ČOVEČNOST, supplemental ČOVEČANSTVO, KRALJEVSKI BAŠTA UNEVERZITE bounded narrative metadata, additive audio-vizuelni kontrabas package metadata, companion ČOVEČANSTVO / OSEĆAJ OSEBENOSTI visual metadata, and OSNOVE / RISPEKT protocol evidence are published only through existing EXTRIMLI/EXTREM/EXTRONDOL/SPAJA KOD surfaces';
       acceptanceEvidence: readonly [
         'dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.implementationPackage',
         'dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection',
         'dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.audioVisualKontrabasPackage',
+        'dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.inspektori',
         'dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.kraljevskiBastaUneverzite',
+        'dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.aiIdentityFinanceGovernance',
         'dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.covecnostAuditVisualReference',
         'dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.covecnostAuditVisualReference.supplementalVisualReferences',
         'dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.covecnostAuditVisualReference.companionAuditVisualReferences',
         'dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.osnoveRispektProtocol',
-        'dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.aiIdentityFinanceGovernance',
         'dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.aiPlateOffer',
         'dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.leksikonTrack',
         'dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.radniProstorTrack',
-        'dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.alatiRadionicaTrack',
         'dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.kraljevskiRadTrack',
+        'dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.promocijeTiketiBonusiPropusniceAdministrativniBonusiTrack',
         'spajaKod.publicSignals.developerAndCreateStatus',
         'radniTaktMozgaMislilac.readiness',
         'metrikoProgramiranje.readiness',
@@ -6058,6 +6060,34 @@ export interface ExtrimliDokDikDakDukConsistencyHealth {
         noParallelSourceOfTruth: true;
         rawInternalsExposed: false;
       };
+      pilotBoundary: {
+        trackRole: 'bounded-pilot-alias-track';
+        parentTrack: 'VRH PROGRAMSKOG EKVILADENTA';
+        canonicalAlias: typeof DEVELOPER_CREATE_PILOT_CANONICAL_ALIAS;
+        roleClassification: typeof DEVELOPER_CREATE_PILOT_ROLE_CLASSIFICATION;
+        extremPublishes: 'status-readiness-fallback-and-deterministic-signal-only';
+        extrondolPublishes: 'wawe-freeze-promotion-review-rollback-audit-summary-only';
+        spajaKodPublishes: 'status-blocker-review-downstream-and-pilot-summary-only';
+        technicalBinding: 'developerAndCreateRepoWideReflection.pilotTrack';
+        noNewRuntimeEngine: true;
+        noNewRuntimeRoutes: true;
+        noParallelSourceOfTruth: true;
+        rawInternalsExposed: false;
+      };
+      devastatorBoundary: {
+        trackRole: 'bounded-devastator-alias-track';
+        parentTrack: 'VRH PROGRAMSKOG EKVILADENTA';
+        canonicalAlias: typeof DEVELOPER_CREATE_DEVASTATOR_CANONICAL_ALIAS;
+        roleClassification: typeof DEVELOPER_CREATE_DEVASTATOR_ROLE_CLASSIFICATION;
+        extremPublishes: 'status-readiness-fallback-and-deterministic-signal-only';
+        extrondolPublishes: 'wawe-freeze-promotion-review-rollback-audit-summary-only';
+        spajaKodPublishes: 'status-blocker-review-downstream-and-devastator-summary-only';
+        technicalBinding: 'developerAndCreateRepoWideReflection.devastatorTrack';
+        noNewRuntimeEngine: true;
+        noNewRuntimeRoutes: true;
+        noParallelSourceOfTruth: true;
+        rawInternalsExposed: false;
+      };
       montezacijaBoundary: {
         trackRole: 'bounded-montezacija-alias-track';
         parentTrack: 'VRH PROGRAMSKOG EKVILADENTA';
@@ -6065,7 +6095,7 @@ export interface ExtrimliDokDikDakDukConsistencyHealth {
         roleClassification: typeof DEVELOPER_CREATE_MONTEZACIJA_ROLE_CLASSIFICATION;
         extremPublishes: 'status-readiness-fallback-and-deterministic-signal-only';
         extrondolPublishes: 'wawe-freeze-promotion-review-rollback-audit-summary-only';
-        spajaKodPublishes: 'status-blocker-review-downstream-montezacija-summary-kraljevska-montezacija-status-and-approval-package-summary-only';
+        spajaKodPublishes: 'status-blocker-review-downstream-and-montezacija-summary-only';
         technicalBinding: 'developerAndCreateRepoWideReflection.montezacijaTrack';
         noNewRuntimeEngine: true;
         noNewRuntimeRoutes: true;
@@ -6221,6 +6251,7 @@ export interface ExtrimliDokDikDakDukConsistencyHealth {
       workflows: boolean;
     };
     dailyOperationalCadence: {
+      status: 'READY' | 'WATCH' | 'BLOCKED';
       technicalSignalOwner: 'EXTREM';
       governanceArtifact: true;
       derivedFromExistingModulesValidatorsAndWorkflows: true;
@@ -6464,7 +6495,7 @@ export interface ExtrimliDeveloperCreateScopeLock {
 
 export interface ExtrimliSurfaceHealthSnapshot {
   generatedFrom: '/api/extrimli/extrem';
-  surfaces: [
+  surfaces: readonly [
     {
       route: '/api/extrimli/extrem';
       status: ExtrimliSpajaKodPublicStatus;

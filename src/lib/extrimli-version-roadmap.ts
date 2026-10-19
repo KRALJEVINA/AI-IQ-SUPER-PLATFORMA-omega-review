@@ -606,6 +606,7 @@ function toExtrimliDeveloperCreateLockComparable(
     operationalAuditPackage,
     acceptanceLock,
     definitionOfDone,
+    dailyOperationalCadence,
     ...unexpectedTopLevel
   } = lock;
   assertNoExtraKeys(unexpectedTopLevel);
@@ -733,6 +734,7 @@ function toExtrimliDeveloperCreateLockComparable(
       securityRequired,
       rollbackRequired,
     },
+    dailyOperationalCadence,
   };
 }
 
