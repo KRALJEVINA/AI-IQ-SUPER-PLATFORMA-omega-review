@@ -1,42 +1,21 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { createRuntime, parseSpajaUltra, transpile, type ASTNode, type AuditRecord } from '@/lib/spaja-ultra-core';
+import { createRuntime, executeSpajaUltra, type ASTNode, type AuditRecord, type BuildArtifact } from '@/lib/spaja-ultra-core';
 import Button from '@/components/Button';
 
-const DEFAULT_CODE = `MOŽE: pristup_sistemu
-MOŽE: upravljanje_korisnicima
-ŽELIM: da pokrenem analizu
-DO: ECHO Sistem se pokreće...
-WAIT: 500
-ASSERT: korisnik_ima_pravo == true
-PRIV: user
-DO: ECHO Sve dozvole potvrđene!
-ŽELIM: da sačuvam rezultate
-DO: ECHO Sesija završena uspešno.`;
+const DEFAULT_CODE = `AKTIVIRAJ: jezgro
+IZGRADI: demo
+POKRENI: demo`;
 
 const DEFAULT_CTX = {
   roles: ['user'],
   korisnik_ima_pravo: true,
   vreme: new Date().getHours(),
+  programi: {
+    demo: 'DO: ECHO Sistem se pokreće...\nASSERT: korisnik_ima_pravo == true\nPRIV: user\nDO: ECHO Sesija završena uspešno.',
+  },
 };
-
-type RuntimeCommand = 'moze' | 'zelim' | 'do' | 'wait' | 'assert' | 'priv';
-
-function resolveRuntimeCall(node: ASTNode): { method: RuntimeCommand; arg: string } {
-  const upper = node.name.toLocaleUpperCase('sr-RS');
-  const arg = node.args.join(' ');
-
-  if (upper === 'MOŽE' || upper === 'MOZE') return { method: 'moze', arg };
-  if (upper === 'ŽELIM' || upper === 'ZELIM') return { method: 'zelim', arg };
-  if (upper === 'DO') return { method: 'do', arg };
-  if (upper === 'WAIT') return { method: 'wait', arg };
-  if (upper === 'ASSERT') return { method: 'assert', arg };
-  if (upper === 'PRIV') return { method: 'priv', arg };
-  if (upper === 'ECHO') return { method: 'do', arg: `ECHO ${arg}`.trim() };
-
-  throw new Error(`Nepodržana naredba: ${node.name}`);
-}
 
 export default function SpajaUltraREPL() {
   const [code, setCode] = useState<string>(DEFAULT_CODE);
@@ -46,49 +25,42 @@ export default function SpajaUltraREPL() {
   const [error, setError] = useState<string>('');
   const [latestAst, setLatestAst] = useState<ASTNode[]>([]);
   const [isRunning, setIsRunning] = useState(false);
+  const [builds, setBuilds] = useState<BuildArtifact[]>([]);
 
   const astJson = useMemo(() => JSON.stringify(latestAst, null, 2), [latestAst]);
 
   const runCode = async () => {
     setIsRunning(true);
     setError('');
+    setLatestAst([]);
+    setBuilds([]);
     const runtime = createRuntime();
+    const executionOutput: string[] = [];
 
     try {
-      const ast = parseSpajaUltra(code);
-      transpile(ast); // validate transpile output before execution
-      setLatestAst(ast);
-
       const parsedValue = JSON.parse(ctxJson) as unknown;
       if (typeof parsedValue !== 'object' || parsedValue === null || Array.isArray(parsedValue)) {
         throw new Error('Runtime ctx mora biti JSON objekat.');
       }
 
       const parsedCtx = parsedValue as Record<string, unknown>;
-      const executionOutput: string[] = [];
 
       const executionCtx = {
         ...parsedCtx,
         onOutput: (line: string) => executionOutput.push(line),
       };
 
-      for (const node of ast) {
-        const { method, arg } = resolveRuntimeCall(node);
-        const callable = runtime[method];
-        if (typeof callable !== 'function') {
-          throw new Error(`Runtime metoda nije dostupna: ${String(method)}`);
-        }
-
-        await callable.call(runtime, arg, executionCtx);
-      }
+      const ast = await executeSpajaUltra(code, runtime, executionCtx);
+      setLatestAst(ast);
 
       setOutput(executionOutput.length > 0 ? executionOutput : ['✅ Izvršavanje završeno bez output poruka.']);
       setAuditLog(runtime.getAuditLog());
     } catch (e) {
-      setOutput([]);
+      setOutput(executionOutput);
       setAuditLog(runtime.getAuditLog());
       setError(e instanceof Error ? e.message : 'Nepoznata greška pri izvršavanju.');
     } finally {
+      setBuilds(runtime.getBuilds());
       setIsRunning(false);
     }
   };
@@ -98,6 +70,7 @@ export default function SpajaUltraREPL() {
     setAuditLog([]);
     setError('');
     setLatestAst([]);
+    setBuilds([]);
   };
 
   const copyAst = async () => {
@@ -123,6 +96,12 @@ export default function SpajaUltraREPL() {
 
   return (
     <div className="space-y-6 rounded-2xl border border-gray-800 bg-black p-6 text-gray-100 shadow-xl shadow-black/50">
+      <p className="text-sm text-gray-300">
+        Lokalna DSL sesija: AKTIVIRAJ: jezgro → IZGRADI: ime → POKRENI: ime.
+        Program unesite u ctx.programi. Svako pokretanje otvara novu sesiju.
+        IZGRADI priprema DSL, a DO ispisuje tekst. Ove komande ne objavljuju aplikaciju.
+        Uloge u JSON polju služe lokalnoj proveri, ne prijavi na server.
+      </p>
       <div className="grid gap-4 lg:grid-cols-2">
         <div>
           <label htmlFor="spaja-ultra-kod" className="mb-2 block text-sm font-medium text-gray-300">SpajaUltra kod</label>
@@ -159,6 +138,7 @@ export default function SpajaUltraREPL() {
         <Button
           type="button"
           onClick={clearAll}
+          disabled={isRunning}
           className="rounded-lg border border-gray-700 bg-gray-900 px-4 py-2 text-sm text-gray-300 transition hover:border-gray-500 hover:text-white"
         >
           🗑 Obriši
@@ -184,6 +164,18 @@ export default function SpajaUltraREPL() {
         <div className="rounded-lg border border-red-700 bg-red-950/60 px-4 py-3 text-sm text-red-300">
           ❌ {error}
         </div>
+      )}
+
+      {builds.length > 0 && (
+        <section className="rounded-xl border border-gray-800 bg-gray-950 p-4">
+          <h3 className="mb-3 text-sm font-semibold text-gray-200">Pripremljeni DSL programi</h3>
+          {builds.map((build) => (
+            <details key={build.name} className="mb-2">
+              <summary>{build.name} · {build.commandCount} naredbi</summary>
+              <pre className="mt-2 overflow-auto whitespace-pre-wrap text-xs">{build.javascript}</pre>
+            </details>
+          ))}
+        </section>
       )}
 
       <div className="grid gap-4 lg:grid-cols-2">
