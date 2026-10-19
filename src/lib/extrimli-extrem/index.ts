@@ -1,3 +1,4 @@
+import { assertReflectionInitialized, type InitialConsistencyHealth } from './initialization';
 import {
   EXTRIMLI_API_RESPONSE_MAX_MS,
   EXTRIMLI_PERFORMANCE_MAX_MS,
@@ -7139,7 +7140,7 @@ export function getExtrimliExtremProfilerReport(): ExtrimliExtremProfilerReport 
   });
   const initialDeveloperAndCreateReadinessStatus: 'READY' | 'WATCH' | 'BLOCKED' = 'BLOCKED';
 
-  const dokDikDakDukConsistencyHealth: ExtrimliDokDikDakDukConsistencyHealth = {
+  const dokDikDakDukConsistencyHealth: InitialConsistencyHealth = {
     sourceOfTruth: '/api/extrimli/extrem',
     scopeLock: ['DOK', 'DIK', 'DAK', 'DUK', 'FOR'],
     ownershipBoundary: {
@@ -10676,6 +10677,7 @@ export function getExtrimliExtremProfilerReport(): ExtrimliExtremProfilerReport 
         workflows: true,
       },
       dailyOperationalCadence: {
+        status: initialDeveloperAndCreateReadinessStatus,
         technicalSignalOwner: 'EXTREM',
         governanceArtifact: true,
         derivedFromExistingModulesValidatorsAndWorkflows: true,
@@ -10699,6 +10701,32 @@ export function getExtrimliExtremProfilerReport(): ExtrimliExtremProfilerReport 
         deterministicFallbackRequired: true,
         reasons: [],
       },
+    },
+    programskiJezikSpecijalizovanZaIgrice: {
+      canonicalName: 'PROGRAMSKI JEZIK SPECIJALIZOVAN ZA IGRICE',
+      meaning: 'gaming-specijalizovan-dsl-za-gameplay-runtime-i-governance',
+      additiveOnlyProfile: 'EXTRIMLI-EXTRONDOL-EXTREM',
+      sourceOfTruthRoutes: ['/api/ai-iq-programski-jezik/evaluate', '/api/ai-iq-programski-jezik/compile', '/api/extrimli/extrem', '/api/extrimli/extrondol'],
+      technicalOwnershipLock: {
+        forPetlja: 'EXTREM', dokDik: 'EXTREM', dakDuk: 'EXTRONDOL',
+        aiIqProgramskiJezik: 'dsl-orchestration-explainability-layer',
+        gamingConsumers: ['src/lib/igrice.ts', 'src/lib/gaming-endzin.ts'],
+        spajaKod: 'audit-safe-summary-only',
+      },
+      domainMetrics: {
+        ...programskiJezikSpecijalizovanZaIgrice.gamingDomainCoverage,
+        forStatus: programskiJezikSpecijalizovanZaIgrice.technicalEvidence.forLoopBinding.forEvidence.status,
+        dokStatus: dokSignal?.status ?? null,
+        dikStatus: dikSignal?.status ?? null,
+        fallbackRequired: programskiJezikSpecijalizovanZaIgrice.readiness.deterministicFallbackRequired,
+      },
+      governanceCoupling: {
+        promotionFreeze: null, humanReviewRequired: true, rollbackPlanRequired: true,
+        downstreamReference: 'spaja86/IO-OPENUI-AO', publicOutput: 'audit-safe-summary',
+      },
+      consolidatedStatus: programskiJezikSpecijalizovanZaIgrice.readiness.status,
+      auditReady: programskiJezikSpecijalizovanZaIgrice.readiness.status === 'READY',
+      reasons: [...programskiJezikSpecijalizovanZaIgrice.readiness.blockerReasons, ...programskiJezikSpecijalizovanZaIgrice.readiness.watchReasons],
     },
     programskiJezikInformacionihTokova: {
       canonicalName: 'PROGRAMSKI JEZIK INFORMACIONIH TOKOVA',
@@ -11043,6 +11071,8 @@ export function getExtrimliExtremProfilerReport(): ExtrimliExtremProfilerReport 
             ? 'carried-over'
             : 'blocked',
     }));
+  dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.dailyOperationalCadence.status =
+    dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.readiness.status;
   dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.technicalReadinessProfile = {
     radniTaktMozgaMislilac: {
       status: radniTaktMozgaMislilac.readiness.status,
@@ -12575,6 +12605,7 @@ export function getExtrimliExtremProfilerReport(): ExtrimliExtremProfilerReport 
         },
       })),
     packageOutputs: {
+      ...dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.covecnostAuditVisualReference.packageOutputs,
       auditShortSummary:
         'ČOVEČNOST primary visual remains audit-safe and technically bound to the existing readiness profile, while the ČOVEČANSTVO supplemental visuals, including SVI KOJI POSTOJE / ZASLUŽUJU DA PRIPADAJU, ENTIZUJAŽAM, EPILOG, MATIČNE ĆELIJE / SPOZNAVANJE SEBE, PRIRODNE MATIČNE ĆELIJE / KUKURUZ, ČISTA VODA / H2O / VODONIK, the four URL-locked pending-title visuals, ŽIVOT U RAVNOTEŽI, TRIJOLOGIJA / DAVO U RUCI / LISICA U KAVEZU, BLAGOSLOV DARIVATI / BOGPATIJU, Mjuzikl kraljevskog čina / epilog u čovečanstvo, BOŽIJI EPITETI / KRALJ NAD KRALJEVIMA, KRALJEVSKA VODICA / KRALJ NAD KRALJEVIMA / ZAKON SILNOG, KRALJEVSTVO — PRAVEDAN SVET ZA SVE NARAŠTAJE, and NARAŠTAJ U PRIRODNOM CVATU / EPILOG / BLAGODARIM, plus the ČOVEČANSTVO / OSEĆAJ OSEBENOSTI companion visual stay bounded by existing EXTREM / EXTRONDOL / SPAJA KOD ownership.',
       publicSummary:
@@ -12879,6 +12910,7 @@ export function getExtrimliExtremProfilerReport(): ExtrimliExtremProfilerReport 
       extrondolPublishes: 'audit-freeze-promotion-review-summary-only',
       spajaKodPublishes: 'final-audit-safe-status-only',
       boundedFacultyDomains: ['POLJOPRIVREDNI FAKULTET', 'GRAĐEVINSKI FAKULTET', 'MATEMATIČKI FAKULTET'],
+      boundedCivicTrack: 'KRALJEVSKI DRUŠTVENI POREDAK',
       noNewRuntimeModule: true,
       noParallelSourceOfTruth: true,
       rawInternalsExposed: false,
@@ -13302,6 +13334,7 @@ export function getExtrimliExtremProfilerReport(): ExtrimliExtremProfilerReport 
       driftZeroLayers: ['docs', 'types', 'routes', 'tests', 'workflows'],
     },
   };
+  assertReflectionInitialized(dokDikDakDukConsistencyHealth);
   dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.napoleonDiskaveriSelectionTrack.discoverySelectionSignal.readinessStatus =
     dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.readiness.status;
   dokDikDakDukConsistencyHealth.developerAndCreateRepoWideReflection.napoleonDiskaveriSelectionTrack.discoverySelectionSignal.readinessScore =
@@ -13751,7 +13784,7 @@ export function getExtrimliExtremProfilerReport(): ExtrimliExtremProfilerReport 
     notes1450Signals.taskContinuityStatus,
     notes1450AiMaterialSaturationRiskStatus,
     notes1450DeterministicNextStepStatus,
-  ];
+  ] as const;
   const notes1450Status = aggregateReadinessStatus(notes1450FinalStatuses);
   const notes1450ReadinessScore = round(
     notes1450FinalStatuses.reduce((sum, status) => sum + readinessStatusScore(status), 0) / notes1450FinalStatuses.length,
@@ -13911,7 +13944,6 @@ export function getExtrimliExtremProfilerReport(): ExtrimliExtremProfilerReport 
   const leksikonWatchSignalStatus =
     leksikonReadinessStatus === 'WATCH'
     || leksikonRhythmStatus === 'WATCH'
-    || leksikonImplementationPackageStatus === 'WATCH'
     || leksikonFallbackStatus === 'WATCH'
       ? 'WATCH'
       : 'READY';
@@ -16045,7 +16077,7 @@ export function getExtrimliExtremProfilerReport(): ExtrimliExtremProfilerReport 
       : mikrofonProjectionCaptureSignalPresent || mikrofonProjectionCanonicalCoverageCount > 0
         ? 'WATCH'
         : 'BLOCKED';
-  const mikrofonProjectionDistributionCoverageCount = ['MEGAFON', 'DISTRIBUTER'].filter((token) =>
+  const mikrofonProjectionDistributionCoverageCount = (['MEGAFON', 'DISTRIBUTER'] as const).filter((token) =>
     actualMikrofonProjectionSequence.includes(token)
     && actualMikrofonProjectionCategorizedTokens.has(token),
   ).length;
