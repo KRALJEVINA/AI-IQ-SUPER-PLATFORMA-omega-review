@@ -76,11 +76,14 @@ available integration cannot inspect the detailed protection endpoint or write
 administrative settings. Until this PR is manually reviewed/merged and the rules
 are enforced, the existing workflows on main remain active.
 
-Residual direct writer: `omega-auto-build.yml` still commits/pushes
-`public/deploy_status.json` to main after a successful main build. It does not
-merge development branches, but will be blocked by strict PR-only protection.
-Migrate that status to an Actions artifact in a separately reviewed change rather
-than giving it a bypass. Other cleanup automation is outside this focused change.
+The residual direct writer in `omega-auto-build.yml` is removed by the separate
+OMEGA CI evidence change (OKRID-2026-OMEGACI-001, proposed, owner @spaja86).
+It uses contents/pull-requests read, disables persisted checkout credentials,
+and uploads per-run CI evidence to Actions artifacts. No main write or bypass
+is needed. `/deploy_status.json` is historical, not a deployment confirmation.
+See [CI evidence and public status](DEPLOY-PORTFOLIO.md#ci-evidence-and-public-status).
+Other cleanup automation and administrator protection enforcement remain outside
+this change. Existing paused workflows must not be enabled for this rollout.
 
 ## Validation and rollout
 

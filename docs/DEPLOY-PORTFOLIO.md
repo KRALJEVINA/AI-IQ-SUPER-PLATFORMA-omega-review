@@ -161,21 +161,48 @@ Canary (10–20%)  →  Staging (50%)  →  Production (100%)
 
 ---
 
-## Deploy Status Artifact
+## CI evidence and public status
 
-Posle svakog CI run-a, `omega-auto-build.yml` generiše `public/deploy_status.json`:
+`omega-auto-build.yml` has a read-only repository token and never commits or
+pushes results. Each push/PR execution attempts to save `ci-result.json` as an
+Actions artifact named `omega-ci-RUN_ID-RUN_ATTEMPT-TESTED_SHA`, retained for 30 days.
+Open [Omega Build](https://github.com/spaja86/AI-IQ-SUPER-PLATFORMA/actions/workflows/omega-auto-build.yml),
+select the exact run/attempt and download its artifact. GitHub access/sign-in may
+be required. Artifacts can expire; no artifact means evidence unavailable.
 
-```json
-{
-  "timestamp": "2026-08-01T12:00:00Z",
-  "version": "100.0.0",
-  "commit_sha": "abc1234",
-  "branch": "main",
-  "status": "success"
-}
-```
+The record contains package version, tested commit (`commit_sha`, PR merge SHA),
+source PR head (`source_commit_sha`), workflow SHA, ref, actor, UTC collection
+time, run/attempt URL, per-gate outcomes and aggregate CI result. `timestamp` is
+collection time before upload, not final run completion. Success requires every
+recorded gate to succeed. Failure, cancellation, skipped/missing gates cannot
+become success. Check the final run conclusion too: upload itself may fail.
+These are workflow-reported CI results, not signed deployment attestations.
 
-Dostupno na: `GET /deploy_status.json`
+Collection and upload use `always()` so ordinary gate failures retain evidence.
+Runner loss, forced cancellation, checkout/Node failure, startup failure or upload
+failure can prevent collection. No privileged follow-up workflow, secrets, PAT,
+repository-write fallback, provider hook or deployment step is introduced.
+
+`GET /deploy_status.json` remains as a compatibility URL with schema version 2:
+`status: historical`, null current timestamp/version/commit/run, unknown current
+CI and `production_deployment.verified: false`. Its original 1 August 2026 record
+is preserved verbatim under `historical_record`; its old `success` and placeholder
+commit/run IDs are unverified historical claims. They cannot be used as a gate.
+Consumers expecting top-level `success` must migrate; none was found in runtime
+code in this repository. `/api/deploy-portfolio` retains `deploy_status_artifact`
+and adds this same explicit `deployment_evidence` object. Its response timestamp
+is API response time, not a deployment check. It does not fetch latest CI results.
+Workflow/agent `active` labels and registry platform statuses elsewhere in that
+response are declarations, not measured execution outcomes.
+
+The Deploy Platforma text and release checklists now point to exact CI runs and
+separate production evidence. Before declaring production successful, obtain
+independent provider/deployment evidence linked to the deployed revision and
+post-deployment health checks. **Successful CI does not confirm production.**
+
+Regression: `node --test scripts/tests/omega-build.test.cjs` runs before npm
+installation in Omega Build; the real GET contract is covered by
+`src/tests/api/deploy-portfolio-evidence.test.ts` in the existing API suite.
 
 ---
 

@@ -179,7 +179,7 @@ export const deployPlatformaSekvence: Sekvenca[] = [
         'OMEGA JWT + Vault: Server-side only — OMEGA_JWT_SECRET + OMEGA_VAULT_KEY u prod secrets',
         'Nova Generacija: Feature flag 20% canary → 50% → 100% staged rollout',
         'Mekartor: repo-local staged rollout 10% canary → 50% staging → 100% production',
-        'deploy_status.json: Javni artifact na /deploy_status.json posle svakog CI run-a',
+        'CI rezultati: GitHub Actions → Omega Build → artefakt omega-ci-RUN-ATTEMPT-SHA; /deploy_status.json je istorijski zapis. Produkcioni deployment nije potvrđen uspešnim CI-jem.',
       ],
     },
   },

@@ -10,6 +10,7 @@
 import { NextResponse } from 'next/server';
 import { deployRegistry } from '@/lib/deploy/deploy-registry';
 import { APP_VERSION } from '@/lib/constants';
+import deployEvidence from '../../../../public/deploy_status.json';
 
 export const dynamic = 'force-dynamic';
 
@@ -108,7 +109,9 @@ export async function GET() {
         workflows: workflowStatus,
         agenti: agentStatus,
       },
+      // Compatibility URL: historical snapshot, never a current success signal.
       deploy_status_artifact: '/deploy_status.json',
+      deployment_evidence: deployEvidence,
       docs: {
         portfolio: '/docs/DEPLOY-PORTFOLIO.md',
         go_live: '/docs/GO-LIVE.md',
