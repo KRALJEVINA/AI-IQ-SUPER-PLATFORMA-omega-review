@@ -1,5 +1,7 @@
 import { executeAst } from './execute';
 import { compileProgram, validateProgramName, type BuildArtifact } from './program';
+import { executeSuocVrhCall, isCompleteVrhResult } from './vrh';
+import type { PetljaResult } from '../petlje/types';
 
 export interface AuditRecord {
   id: string;
@@ -364,6 +366,7 @@ function evaluateAssertionExpression(expression: string, ctx: RuntimeContext): b
 export class SpajaRuntime {
   private readonly auditLog: AuditRecord[] = [];
   private active = false;
+  private lastVrhResult?: PetljaResult;
   private readonly builds = new Map<string, ReturnType<typeof compileProgram>>();
 
   constructor(private readonly options: RuntimeOptions = {}) {}
@@ -401,6 +404,24 @@ export class SpajaRuntime {
 
   getBuilds(): BuildArtifact[] {
     return [...this.builds.values()].map(({ artifact }) => ({ ...artifact }));
+  }
+
+  async vrh(argument: string, ctx: RuntimeContext): Promise<void> {
+    await this.withAudit('VRH', argument, async () => {
+      this.lastVrhResult = undefined;
+      this.requireActive();
+      const result = executeSuocVrhCall(argument);
+      this.lastVrhResult = result;
+      if (!isCompleteVrhResult(result)) {
+        throw new Error(`VRH ${result.kind}: nepotpun ili neuspešan rezultat (${result.reason}); proverite ceo rezultat.`);
+      }
+      ctx.onOutput?.(`[VRH] ${result.kind}: ${result.output}`);
+    });
+  }
+
+  /** Detached last numerical result, including partial results. Session memory only. */
+  getLastVrhResult(): PetljaResult | undefined {
+    return this.lastVrhResult ? structuredClone(this.lastVrhResult) : undefined;
   }
 
   private requireActive(): void {

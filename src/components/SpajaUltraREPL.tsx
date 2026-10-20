@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { createRuntime, executeSpajaUltra, type ASTNode, type AuditRecord, type BuildArtifact } from '@/lib/spaja-ultra-core';
+import { createRuntime, executeSpajaUltra, SUOC_VRH_EXAMPLE, isCompleteVrhResult, type ASTNode, type AuditRecord, type BuildArtifact, type VrhResult } from '@/lib/spaja-ultra-core';
 import Button from '@/components/Button';
 
 const DEFAULT_CODE = `AKTIVIRAJ: jezgro
@@ -26,6 +26,7 @@ export default function SpajaUltraREPL() {
   const [latestAst, setLatestAst] = useState<ASTNode[]>([]);
   const [isRunning, setIsRunning] = useState(false);
   const [builds, setBuilds] = useState<BuildArtifact[]>([]);
+  const [vrhResult, setVrhResult] = useState<VrhResult>();
 
   const astJson = useMemo(() => JSON.stringify(latestAst, null, 2), [latestAst]);
 
@@ -34,6 +35,7 @@ export default function SpajaUltraREPL() {
     setError('');
     setLatestAst([]);
     setBuilds([]);
+    setVrhResult(undefined);
     const runtime = createRuntime();
     const executionOutput: string[] = [];
 
@@ -61,6 +63,7 @@ export default function SpajaUltraREPL() {
       setError(e instanceof Error ? e.message : 'Nepoznata greška pri izvršavanju.');
     } finally {
       setBuilds(runtime.getBuilds());
+      setVrhResult(runtime.getLastVrhResult());
       setIsRunning(false);
     }
   };
@@ -71,6 +74,7 @@ export default function SpajaUltraREPL() {
     setError('');
     setLatestAst([]);
     setBuilds([]);
+    setVrhResult(undefined);
   };
 
   const copyAst = async () => {
@@ -101,6 +105,7 @@ export default function SpajaUltraREPL() {
         Program unesite u ctx.programi. Svako pokretanje otvara novu sesiju.
         IZGRADI priprema DSL, a DO ispisuje tekst. Ove komande ne objavljuju aplikaciju.
         Uloge u JSON polju služe lokalnoj proveri, ne prijavi na server.
+        VRH poziva postojeće numeričke petlje lokalno; rezultat se ne čuva posle osvežavanja.
       </p>
       <div className="grid gap-4 lg:grid-cols-2">
         <div>
@@ -127,6 +132,14 @@ export default function SpajaUltraREPL() {
       </div>
 
       <div className="flex flex-wrap gap-2">
+        <Button
+          type="button"
+          disabled={isRunning}
+          onClick={() => { clearAll(); setCode(SUOC_VRH_EXAMPLE); }}
+          className="rounded-lg border border-sky-700 bg-sky-950 px-4 py-2 text-sm text-sky-200 disabled:opacity-50"
+        >
+          Učitaj VRH primer
+        </Button>
         <Button
           type="button"
           onClick={runCode}
@@ -161,9 +174,22 @@ export default function SpajaUltraREPL() {
       </div>
 
       {error && (
-        <div className="rounded-lg border border-red-700 bg-red-950/60 px-4 py-3 text-sm text-red-300">
+        <div role="alert" className="rounded-lg border border-red-700 bg-red-950/60 px-4 py-3 text-sm text-red-300">
           ❌ {error}
         </div>
+      )}
+
+      {vrhResult && (
+        <section aria-label="Poslednji VRH rezultat" className="rounded-xl border border-gray-800 bg-gray-950 p-4">
+          <h3 className="text-sm font-semibold text-gray-200">Poslednji VRH rezultat · {vrhResult.kind}</h3>
+          <p role="status" className={`mt-2 text-sm ${isCompleteVrhResult(vrhResult) ? 'text-green-300' : 'text-amber-300'}`}>
+            {isCompleteVrhResult(vrhResult) ? '🟢 Završeno' : '🟡 Nepotpuno ili neuspešno'} · {vrhResult.reason}
+          </p>
+          <details className="mt-3 text-sm">
+            <summary>Prikaži ceo rezultat i trag izvršavanja</summary>
+            <pre className="mt-2 max-h-80 overflow-auto whitespace-pre-wrap text-xs">{JSON.stringify(vrhResult, null, 2)}</pre>
+          </details>
+        </section>
       )}
 
       {builds.length > 0 && (

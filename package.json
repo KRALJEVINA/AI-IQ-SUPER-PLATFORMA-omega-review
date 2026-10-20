@@ -26,6 +26,7 @@
     "routes:generate-tests": "node scripts/generate-route-tests.mjs",
     "openapi:generate": "npx tsx scripts/generate-openapi.mts",
     "engines:sync": "npx tsx scripts/engine-auto-connect.ts",
+    "test:core": "npx tsx src/tests/auth/omega-auth.test.ts && npx tsx src/tests/spaja-ultra/spaja-ultra-core.test.ts && npx tsx src/tests/spaja-ultra/lifecycle.test.ts && node --import tsx --test src/tests/spaja-ultra/vrh.test.ts && npx tsx src/tests/glavni-endzin/glavni-endzin.test.ts && npx tsx src/tests/api/api-contracts.test.ts",
     "test:core": "npx tsx src/tests/auth/omega-auth.test.ts && node --import tsx --test src/tests/auth/login-route-security.test.ts && npx tsx src/tests/spaja-ultra/spaja-ultra-core.test.ts && npx tsx src/tests/spaja-ultra/lifecycle.test.ts && npx tsx src/tests/glavni-endzin/glavni-endzin.test.ts && npx tsx src/tests/api/api-contracts.test.ts",
     "test:autofinish:critical": "npx tsx src/tests/autofinish/sve-od-svega-route.test.ts && npx tsx src/tests/autofinish/cron-sve-od-svega-refresh-route.test.ts && npx tsx src/tests/autofinish/eksponencionalne-geometrijske-razmere-route.test.ts",
     "test:billing": "node scripts/run-tsx-tests.mjs src/tests/billing",
@@ -43,7 +44,8 @@
     "blockchain:deploy:mainnet": "npx hardhat run scripts/deploy.ts --network polygon",
     "digitalni-kompjuter": "npx tsx scripts/digitalni-kompjuter.ts",
     "test:digitalni-kompjuter": "npx tsx src/tests/digitalni-kompjuter/catalog.test.ts && npx tsx src/tests/digitalni-kompjuter/finance-governance.test.ts",
-    "test:bank-prototype": "tsx src/tests/bank-prototype/safety.test.ts && tsx src/tests/bank-prototype/routes.test.ts"
+    "test:bank-prototype": "tsx src/tests/bank-prototype/safety.test.ts && tsx src/tests/bank-prototype/routes.test.ts",
+    "test:suoc": "node --import tsx src/tests/spaja-ultra/spaja-ultra-core.test.ts && node --import tsx src/tests/spaja-ultra/lifecycle.test.ts && node --import tsx --test src/tests/spaja-ultra/vrh.test.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.10.2",
