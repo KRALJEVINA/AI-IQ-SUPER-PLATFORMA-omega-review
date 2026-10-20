@@ -58,8 +58,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Neispravan format email adrese' }, { status: 400 });
   }
 
-  if (!body.password && !body.oauthCode) {
-    return NextResponse.json({ error: 'Lozinka ili OAuth kod je obavezan' }, { status: 400 });
+  if (!body.password) {
+    return NextResponse.json({ error: 'Lozinka je obavezna' }, { status: 400 });
   }
 
   // Validacija lozinke — minimalna duzina i prazni stringovi

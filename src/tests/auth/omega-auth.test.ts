@@ -332,7 +332,7 @@ async function runTests(): Promise<void> {
     assert(loggedIn === null, 'wrong password should fail');
   });
 
-  await test('login requires either password or oauthCode', async () => {
+  await test('login requires a password', async () => {
     const uniqueEmail = `oauth-${ΩCryptoEngine.generateId()}@test.local`;
     await ΩAuthProvider.register({ email: uniqueEmail, password: 'CorrectPass!123' });
     const loggedIn = await ΩAuthProvider.login({
@@ -340,6 +340,32 @@ async function runTests(): Promise<void> {
       password: '',
     });
     assert(loggedIn === null, 'missing credentials should fail');
+  });
+
+  await test('unverified OAuth codes cannot replace a password', async () => {
+    const email = `oauth-bypass-${ΩCryptoEngine.generateId()}@test.local`;
+    const registered = await ΩAuthProvider.register({ email, password: 'CorrectPass!123' });
+    assert(registered !== null, 'test account should exist');
+    const previousLogin = getGlobalVault().retrieveIdentity(registered.identity.id)?.lastLoginAt;
+    for (const oauthProvider of ['github', 'google'] as const) {
+      const result = await ΩAuthProvider.login({ email, password: '', oauthProvider, oauthCode: 'unverified-code' });
+      assert(result === null, `${oauthProvider} code must not issue tokens`);
+    }
+    assertEqual(getGlobalVault().retrieveIdentity(registered.identity.id)?.lastLoginAt, previousLogin);
+  });
+
+  await test('OAuth fields cannot rescue an incorrect password', async () => {
+    const email = `oauth-wrong-${ΩCryptoEngine.generateId()}@test.local`;
+    await ΩAuthProvider.register({ email, password: 'CorrectPass!123' });
+    const result = await ΩAuthProvider.login({ email, password: 'WrongPass!123', oauthCode: 'unverified-code' });
+    assert(result === null, 'wrong password with a code must fail');
+  });
+
+  await test('correct password still works when OAuth fields are present', async () => {
+    const email = `oauth-password-${ΩCryptoEngine.generateId()}@test.local`;
+    await ΩAuthProvider.register({ email, password: 'CorrectPass!123' });
+    const result = await ΩAuthProvider.login({ email, password: 'CorrectPass!123', oauthCode: 'unverified-code' });
+    assert(result !== null, 'verified password should authenticate');
   });
 
   await test('login with MFA enabled fails without totpCode', async () => {
