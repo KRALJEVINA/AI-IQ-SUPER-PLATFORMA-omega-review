@@ -19,6 +19,7 @@ const SUPPORTED_COMMANDS = new Set<string>([
   'AKTIVIRAJ',
   'IZGRADI',
   'POKRENI',
+  'VRH',
 ]);
 
 function normalizeCommand(raw: string): string {

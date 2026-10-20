@@ -1,6 +1,7 @@
 import type { ASTNode } from './parser';
+import { validateSuocVrhCommands } from './vrh';
 
-export type RuntimeMethod = 'moze' | 'zelim' | 'do' | 'wait' | 'assert' | 'priv' | 'aktiviraj' | 'izgradi' | 'pokreni';
+export type RuntimeMethod = 'moze' | 'zelim' | 'do' | 'wait' | 'assert' | 'priv' | 'aktiviraj' | 'izgradi' | 'pokreni' | 'vrh';
 
 export function resolveRuntimeCall(name: string, arg: string): { runtimeMethod: RuntimeMethod; runtimeArg: string } {
   const upper = name.toLocaleUpperCase('sr-RS');
@@ -15,6 +16,7 @@ export function resolveRuntimeCall(name: string, arg: string): { runtimeMethod: 
   if (upper === 'AKTIVIRAJ') return { runtimeMethod: 'aktiviraj', runtimeArg: arg };
   if (upper === 'IZGRADI') return { runtimeMethod: 'izgradi', runtimeArg: arg };
   if (upper === 'POKRENI') return { runtimeMethod: 'pokreni', runtimeArg: arg };
+  if (upper === 'VRH') return { runtimeMethod: 'vrh', runtimeArg: arg };
 
   throw new Error(`Transpajler ne podržava naredbu: "${name}"`);
 }
@@ -31,5 +33,6 @@ export function transpile(ast: ASTNode[]): string {
     return `  await runtime.${runtimeMethod}(${JSON.stringify(runtimeArg)}, ctx);`;
   });
 
+  validateSuocVrhCommands(ast);
   return `return (async function(runtime, ctx) {\n${bodyLines.join('\n')}\n});`;
 }

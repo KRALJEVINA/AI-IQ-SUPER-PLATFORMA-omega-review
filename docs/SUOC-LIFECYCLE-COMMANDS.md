@@ -5,6 +5,10 @@ Osnova: `b2d70356fa6cd5291dcf7a0ae810d80a0f482ecd`.
 
 ## Ugovor
 
+Dopuna od 20.10.2026: lokalni `VRH: <JSON>` poziv postojećih numeričkih petlji
+opisan je u [SUOC-VRH-INTEGRATION.md](SUOC-VRH-INTEGRATION.md). Istorijski
+rezultati provera ispod odnose se na prvobitnu lifecycle promenu.
+
 | Komanda | Ulaz | Efekat | Greška |
 |---|---|---|---|
 | `AKTIVIRAJ: jezgro` | Isključivo literal `jezgro` | Aktivira ovu instancu runtime-a; ponavljanje je dozvoljeno | Drugi cilj se odbija, stanje ostaje nepromenjeno |
