@@ -193,15 +193,13 @@ export class ΩAuthProvider {
 
     if (!identity) return null;
 
-    // Verifikuj lozinku — OBAVEZNO za svaki login
-    if (request.password) {
-      if (!identity.passwordHash) return null;
-      const passwordValid = await ΩCryptoEngine.verifyPassword(request.password, identity.passwordHash);
-      if (!passwordValid) return null;
-    } else if (!request.oauthCode) {
-      // Ni lozinka ni OAuth kod — odbij
-      return null;
-    }
+    // This entry point authenticates passwords only. An unverified OAuth code
+    // must never substitute for credentials; provider callbacks need a separate,
+    // server-verified identity flow before OAuth login can be supported.
+    if (typeof request.password !== 'string' || !request.password.trim()) return null;
+    if (!identity.passwordHash) return null;
+    const passwordValid = await ΩCryptoEngine.verifyPassword(request.password, identity.passwordHash);
+    if (!passwordValid) return null;
 
     // Provjeri 2FA ako je omogućeno
     if (identity.mfaEnabled) {
